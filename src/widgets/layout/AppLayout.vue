@@ -1,9 +1,11 @@
 <template>
-  <div class="flex min-h-screen bg-white text-zinc-900">
+  <div class="flex min-h-screen bg-zinc-50 text-zinc-900">
     <AppSidebar />
-    <main class="min-w-0 flex-1 flex flex-col overflow-auto">
-      <div class="p-6">
-        <router-view />
+    <main class="min-w-0 min-h-screen flex-1 flex flex-col overflow-auto">
+      <div class="flex min-h-full flex-1 flex-col p-4">
+        <div class="min-h-full flex-1 rounded-xl bg-white p-4 shadow-md">
+          <router-view />
+        </div>
       </div>
     </main>
   </div>

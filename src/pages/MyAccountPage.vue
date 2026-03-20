@@ -10,7 +10,7 @@
         </div>
         <router-link
           :to="{ name: 'myAccountEdit' }"
-          class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-200 hover:text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-400"
+          class="inline-flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-200 hover:text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-400"
           title="Редагувати профіль"
         >
           <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -37,7 +37,7 @@
         <h3 class="text-base font-medium text-zinc-900">Мої сесії</h3>
         <button
           type="button"
-          class="rounded-lg bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-black focus:outline-none disabled:opacity-50"
+          class="cursor-pointer rounded-lg bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-black focus:outline-none disabled:opacity-50"
           :disabled="loading"
           @click="loadSessions"
         >
@@ -68,7 +68,7 @@
             </div>
             <button
               type="button"
-              class="shrink-0 rounded-lg border border-red-300 px-2.5 py-1 text-xs text-red-600 hover:bg-red-50 focus:outline-none disabled:opacity-60"
+              class="shrink-0 cursor-pointer rounded-lg border border-red-300 px-2.5 py-1 text-xs text-red-600 hover:bg-red-50 focus:outline-none disabled:opacity-60"
               :disabled="deletingSessionId === session.id"
               @click="deleteSession(session.id)"
             >

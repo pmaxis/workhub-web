@@ -1,14 +1,16 @@
 <template>
   <div class="relative flex shrink-0">
-    <aside class="flex w-64 shrink-0 flex-col overflow-hidden border-r border-zinc-200 bg-zinc-50">
+    <aside class="flex w-64 shrink-0 flex-col overflow-hidden bg-white shadow-[4px_0_6px_-1px_rgb(0_0_0_/0.08)]">
       <SidebarHeader />
       <SidebarMain />
       <SidebarFooter
         ref="footerRef"
         :user-initials="userInitials"
         :is-user-menu-open="isUserMenuOpen"
+        :has-notifications="hasNotifications"
         @toggle-menu="isUserMenuOpen = !isUserMenuOpen"
         @logout="handleLogout"
+        @notifications="handleNotifications"
       />
     </aside>
 
@@ -26,13 +28,14 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useAuth } from '@/features/auth';
 import SidebarHeader from './ui/SidebarHeader.vue';
 import SidebarMain from './ui/SidebarMain.vue';
 import SidebarFooter from './ui/SidebarFooter.vue';
 import SidebarUserMenu from './ui/SidebarUserMenu.vue';
 
+const route = useRoute();
 const router = useRouter();
 const auth = useAuth();
 
@@ -40,6 +43,7 @@ const footerRef = ref<InstanceType<typeof SidebarFooter> | null>(null);
 const userMenuRef = ref<InstanceType<typeof SidebarUserMenu> | null>(null);
 const isUserMenuOpen = ref(false);
 const userMenuStyle = ref<Record<string, string>>({});
+const hasNotifications = ref(true); // TODO: отримувати з API
 
 const userPib = computed(() => {
   const u = auth.user;
@@ -86,6 +90,10 @@ async function handleLogout() {
   router.replace({ name: 'login' });
 }
 
+function handleNotifications() {
+  router.push({ name: 'notifications' });
+}
+
 onMounted(() => {
   document.addEventListener('click', handleClickOutside, true);
 });
@@ -95,6 +103,15 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleViewportChange);
   window.removeEventListener('scroll', handleViewportChange, true);
 });
+
+watch(
+  () => route.name,
+  (name) => {
+    if (name === 'myAccount' || name === 'myAccountEdit') {
+      isUserMenuOpen.value = false;
+    }
+  },
+);
 
 watch(isUserMenuOpen, async (open) => {
   if (!open) {

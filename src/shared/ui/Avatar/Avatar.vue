@@ -1,11 +1,15 @@
 <template>
   <div
     :class="[
-      'flex items-center justify-center rounded-full font-semibold border border-zinc-300 bg-zinc-200 text-zinc-700',
+      'relative flex items-center justify-center rounded-full border-2 border-black font-semibold',
       sizeClass,
     ]"
   >
-    {{ initials }}
+    <div
+      class="absolute inset-0 flex items-center justify-center rounded-full border-2 border-white bg-black text-white"
+    >
+      {{ initials }}
+    </div>
   </div>
 </template>
 
@@ -15,12 +19,14 @@ import { computed } from 'vue';
 const props = withDefaults(
   defineProps<{
     initials: string;
-    size?: 'sm' | 'md';
+    size?: 'sm' | 'md' | 'lg';
   }>(),
   { size: 'sm' }
 );
 
-const sizeClass = computed(() =>
-  props.size === 'md' ? 'h-11 w-11 text-sm' : 'h-9 w-9 text-xs'
-);
+const sizeClass = computed(() => {
+  if (props.size === 'lg') return 'h-12 w-12 text-base';
+  if (props.size === 'md') return 'h-11 w-11 text-sm';
+  return 'h-9 w-9 text-xs';
+});
 </script>
