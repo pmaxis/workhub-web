@@ -1,5 +1,60 @@
-# Vue 3 + TypeScript + Vite
+# WorkHub Web
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+WorkHub web client — home page, user profile and account editing.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Stack
+
+- Vue 3 + TypeScript
+- Vite
+- Vue Router
+- Pinia
+- Tailwind CSS
+- Axios
+
+## Running
+
+### Development
+
+```bash
+pnpm install
+pnpm dev
+```
+
+App is available at `http://localhost:5173`. API is proxied to `http://localhost:3000` (workhub-api).
+
+### Build
+
+```bash
+pnpm build
+pnpm preview
+```
+
+### Docker
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+App is available at `http://localhost:8081`.
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `VITE_API_BASE_URL` | API base URL | `/api` |
+| `VITE_API_PROXY_TARGET` | Proxy target for `pnpm dev` | `http://localhost:3000` |
+
+## Docker
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `API_HOST` | API host for nginx proxy | `host.docker.internal` |
+| `API_PORT` | API port | `3000` |
+
+## Structure
+
+- `src/pages/` — pages (Home, Login, MyAccount, MyAccountEdit)
+- `src/features/` — auth, profile
+- `src/widgets/` — layout, sidebar
+- `src/shared/` — UI components, API client
