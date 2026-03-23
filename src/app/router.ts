@@ -13,6 +13,12 @@ const router = createRouter({
       meta: { guest: true },
     },
     {
+      path: '/register',
+      name: 'register',
+      component: () => import('@/pages/RegisterPage.vue'),
+      meta: { guest: true },
+    },
+    {
       path: '/',
       component: AppLayout,
       meta: { requiresAuth: true },
@@ -84,8 +90,20 @@ const router = createRouter({
         {
           path: 'clients',
           name: 'clients',
-          component: () => import('@/pages/PlaceholderPage.vue'),
+          component: () => import('@/pages/ClientsPage.vue'),
           meta: { pageTitle: 'Клієнти', pageDescription: 'База клієнтів' },
+        },
+        {
+          path: 'invitations',
+          name: 'invitations',
+          component: () => import('@/pages/InvitationsPage.vue'),
+          meta: { pageTitle: 'Запрошення', pageDescription: 'Запрошення клієнтів' },
+        },
+        {
+          path: 'invitations/new',
+          name: 'invitationCreate',
+          component: () => import('@/pages/InvitationCreatePage.vue'),
+          meta: { pageTitle: 'Нове запрошення' },
         },
         {
           path: 'clients/new',

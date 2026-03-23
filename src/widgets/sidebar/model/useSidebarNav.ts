@@ -59,6 +59,12 @@ const navStructureRaw: NavItem[] = [
     label: 'Клієнти',
     children: [
       {
+        name: 'invitations',
+        label: 'Запрошення',
+        to: { name: 'invitations' },
+        routeNames: ['invitations', 'invitationCreate'],
+      },
+      {
         name: 'clients',
         label: 'Клієнти',
         to: { name: 'clients' },

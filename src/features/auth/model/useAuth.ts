@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { authApi } from '../api/auth.api';
 import { profileApi } from '@/features/profile';
-import type { AuthUser, LoginPayload } from './types';
+import type { AuthUser, LoginPayload, RegisterPayload } from './types';
 
 type AccessTokenPayload = {
   userId: string;
@@ -47,6 +47,12 @@ export const useAuth = defineStore('auth', () => {
     await fetchMe();
   }
 
+  async function register(payload: RegisterPayload) {
+    const { accessToken: token } = await authApi.register(payload);
+    accessToken.value = token;
+    await fetchMe();
+  }
+
   async function fetchMe() {
     const token = accessToken.value;
     if (!token) {
@@ -85,6 +91,7 @@ export const useAuth = defineStore('auth', () => {
     isAuthenticated,
     init,
     login,
+    register,
     logout,
     fetchMe,
     getToken,
