@@ -167,6 +167,7 @@ async function submit() {
         description: description.value.trim() || null,
         status: status.value,
       });
+      await router.push(backTo.value);
     } else {
       if (!selectedProjectId.value) {
         formError.value = 'Оберіть проєкт';
@@ -178,8 +179,8 @@ async function submit() {
         status: status.value,
         projectId: selectedProjectId.value,
       });
+      await router.push({ name: 'tasks' });
     }
-    await router.push(backTo.value);
   } catch (e: unknown) {
     formError.value = e instanceof Error ? e.message : 'Не вдалося зберегти';
   } finally {

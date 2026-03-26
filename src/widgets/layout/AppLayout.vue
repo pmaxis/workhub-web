@@ -1,10 +1,14 @@
 <template>
-  <div class="flex min-h-screen bg-zinc-50 text-zinc-900">
+  <div class="flex h-screen min-h-0 overflow-hidden bg-zinc-50 text-zinc-900">
     <AppSidebar />
-    <main class="min-w-0 min-h-screen flex-1 flex flex-col overflow-auto">
-      <div class="flex min-h-full flex-1 flex-col p-4">
-        <div class="min-h-full flex-1 rounded-xl bg-white p-4 shadow-md">
-          <router-view />
+    <main class="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+      <div class="flex h-full min-h-0 flex-1 flex-col p-4">
+        <div
+          class="flex h-full min-h-0 flex-1 flex-col overflow-hidden rounded-xl bg-white p-4 shadow-md"
+        >
+          <div class="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-y-auto">
+            <router-view />
+          </div>
         </div>
       </div>
     </main>
