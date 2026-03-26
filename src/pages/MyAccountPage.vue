@@ -8,16 +8,15 @@
             Перегляд та редагування профілю.
           </p>
         </div>
-        <router-link
-          :to="{ name: 'myAccountEdit' }"
-          class="inline-flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-200 hover:text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-400"
-          title="Редагувати профіль"
-        >
-          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-            <path d="m15 5 4 4" />
-          </svg>
-        </router-link>
+        <Dropdown aria-label="Дії з профілем">
+          <router-link
+            :to="{ name: 'myAccountEdit' }"
+            role="menuitem"
+            class="block px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
+          >
+            Редагувати профіль
+          </router-link>
+        </Dropdown>
       </div>
 
       <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -66,14 +65,17 @@
                 IP: {{ session.ipAddress || '—' }} | Закінчується: {{ formatDate(session.expiresAt) }}
               </p>
             </div>
-            <button
-              type="button"
-              class="shrink-0 cursor-pointer rounded-lg border border-red-300 px-2.5 py-1 text-xs text-red-600 hover:bg-red-50 focus:outline-none disabled:opacity-60"
-              :disabled="deletingSessionId === session.id"
-              @click="deleteSession(session.id)"
-            >
-              {{ deletingSessionId === session.id ? 'Видалення...' : 'Видалити' }}
-            </button>
+            <Dropdown aria-label="Дії з сесією">
+              <button
+                type="button"
+                role="menuitem"
+                class="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                :disabled="deletingSessionId === session.id"
+                @click="deleteSession(session.id)"
+              >
+                {{ deletingSessionId === session.id ? 'Видалення…' : 'Видалити сесію' }}
+              </button>
+            </Dropdown>
           </div>
         </div>
       </div>
@@ -85,6 +87,7 @@
 import { computed, ref, onMounted } from 'vue';
 import { useAuth } from '@/features/auth';
 import { apiClient } from '@/shared/api/client';
+import { Dropdown } from '@/shared/ui';
 
 type SessionItem = {
   id: string;

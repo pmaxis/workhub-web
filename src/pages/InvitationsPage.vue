@@ -85,25 +85,27 @@
             <td class="whitespace-nowrap px-4 py-3 text-sm text-zinc-600">
               {{ formatDate(inv.expiresAt) }}
             </td>
-            <td class="whitespace-nowrap px-4 py-3 text-right">
-              <div class="flex justify-end gap-2">
+            <td class="whitespace-nowrap px-4 py-3 text-right text-sm">
+              <Dropdown>
                 <button
                   type="button"
-                  class="cursor-pointer rounded-lg border border-zinc-300 px-2.5 py-1 text-xs text-zinc-700 hover:bg-zinc-100 focus:outline-none"
-                  :disabled="resendingId === inv.id"
+                  role="menuitem"
+                  class="block w-full px-3 py-2 text-left text-sm text-zinc-700 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  :disabled="resendingId === inv.id || deletingId === inv.id"
                   @click="resendInvitation(inv.id)"
                 >
-                  {{ resendingId === inv.id ? '...' : 'Надіслати знову' }}
+                  {{ resendingId === inv.id ? 'Надсилання…' : 'Надіслати знову' }}
                 </button>
                 <button
                   type="button"
-                  class="cursor-pointer rounded-lg border border-red-300 px-2.5 py-1 text-xs text-red-600 hover:bg-red-50 focus:outline-none"
-                  :disabled="deletingId === inv.id"
+                  role="menuitem"
+                  class="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  :disabled="deletingId === inv.id || resendingId === inv.id"
                   @click="deleteInvitation(inv.id)"
                 >
-                  {{ deletingId === inv.id ? '...' : 'Видалити' }}
+                  {{ deletingId === inv.id ? 'Видалення…' : 'Видалити' }}
                 </button>
-              </div>
+              </Dropdown>
             </td>
           </tr>
         </tbody>
@@ -115,6 +117,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { invitationsApi, type Invitation } from '@/features/invitations';
+import { Dropdown } from '@/shared/ui';
 
 const invitations = ref<Invitation[]>([]);
 const loading = ref(false);

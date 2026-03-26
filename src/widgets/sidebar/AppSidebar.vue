@@ -1,33 +1,32 @@
 <template>
   <div class="relative flex shrink-0">
-    <aside class="flex w-64 shrink-0 flex-col overflow-hidden bg-white shadow-[4px_0_6px_-1px_rgb(0_0_0_/0.08)]">
+    <aside class="flex w-64 shrink-0 flex-col bg-white shadow-[4px_0_6px_-1px_rgb(0_0_0_/0.08)]">
       <SidebarHeader />
       <SidebarMain />
-      <SidebarFooter
-        ref="footerRef"
-        :user-initials="userInitials"
-        :is-user-menu-open="isUserMenuOpen"
-        :has-notifications="hasNotifications"
-        @toggle-menu="isUserMenuOpen = !isUserMenuOpen"
-        @logout="handleLogout"
-        @notifications="handleNotifications"
-      />
+      <div class="relative z-20 shrink-0">
+        <SidebarUserMenu
+          ref="userMenuRef"
+          :user="auth.user"
+          :user-pib="userPib"
+          :user-initials="userInitials"
+          :is-open="isUserMenuOpen"
+          @logout="handleLogout"
+        />
+        <SidebarFooter
+          ref="footerRef"
+          :user-initials="userInitials"
+          :is-user-menu-open="isUserMenuOpen"
+          :has-notifications="hasNotifications"
+          @toggle-menu="isUserMenuOpen = !isUserMenuOpen"
+          @notifications="handleNotifications"
+        />
+      </div>
     </aside>
-
-    <SidebarUserMenu
-      ref="userMenuRef"
-      :user="auth.user"
-      :user-pib="userPib"
-      :user-initials="userInitials"
-      :is-open="isUserMenuOpen"
-      :style="userMenuStyle"
-      @logout="handleLogout"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuth } from '@/features/auth';
 import SidebarHeader from './ui/SidebarHeader.vue';
@@ -42,7 +41,6 @@ const auth = useAuth();
 const footerRef = ref<InstanceType<typeof SidebarFooter> | null>(null);
 const userMenuRef = ref<InstanceType<typeof SidebarUserMenu> | null>(null);
 const isUserMenuOpen = ref(false);
-const userMenuStyle = ref<Record<string, string>>({});
 const hasNotifications = ref(true); // TODO: отримувати з API
 
 const userPib = computed(() => {
@@ -59,23 +57,6 @@ const userInitials = computed(() => {
   if (initials) return initials.toUpperCase();
   return u.email.slice(0, 1).toUpperCase();
 });
-
-function updateUserMenuPosition() {
-  const buttonEl = footerRef.value?.buttonRef;
-  if (!buttonEl) return;
-  const rect = buttonEl.getBoundingClientRect();
-  const margin = 12;
-  const preferredWidth = 320;
-  const left = Math.min(Math.max(rect.left, margin), window.innerWidth - preferredWidth - margin);
-  userMenuStyle.value = {
-    left: `${left}px`,
-    bottom: `${window.innerHeight - rect.top + 8}px`,
-  };
-}
-
-function handleViewportChange() {
-  if (isUserMenuOpen.value) updateUserMenuPosition();
-}
 
 function handleClickOutside(e: MouseEvent) {
   const target = e.target as Node;
@@ -100,8 +81,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside, true);
-  window.removeEventListener('resize', handleViewportChange);
-  window.removeEventListener('scroll', handleViewportChange, true);
 });
 
 watch(
@@ -113,15 +92,4 @@ watch(
   },
 );
 
-watch(isUserMenuOpen, async (open) => {
-  if (!open) {
-    window.removeEventListener('resize', handleViewportChange);
-    window.removeEventListener('scroll', handleViewportChange, true);
-    return;
-  }
-  await nextTick();
-  updateUserMenuPosition();
-  window.addEventListener('resize', handleViewportChange);
-  window.addEventListener('scroll', handleViewportChange, true);
-});
 </script>
