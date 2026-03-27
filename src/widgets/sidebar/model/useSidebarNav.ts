@@ -34,16 +34,16 @@ const navStructureRaw: NavItem[] = [
     label: 'Робота',
     children: [
       {
-        name: 'projects',
-        label: 'Проєкти',
-        to: { name: 'projects' },
-        routeNames: ['projects', 'projectCreate', 'projectEdit', 'projectDetail'],
-      },
-      {
         name: 'tasks',
         label: 'Задачі',
         to: { name: 'tasks' },
         routeNames: ['tasks', 'taskCreate', 'taskEdit'],
+      },
+      {
+        name: 'projects',
+        label: 'Проєкти',
+        to: { name: 'projects' },
+        routeNames: ['projects', 'projectCreate', 'projectEdit', 'projectDetail'],
       },
       {
         name: 'timeTracker',

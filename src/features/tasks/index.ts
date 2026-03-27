@@ -4,4 +4,4 @@ export {
   type TaskStatus,
   type CreateTaskPayload,
   type UpdateTaskPayload,
-} from './api/tasks.api';
+} from '@/features/tasks/api/tasks.api';

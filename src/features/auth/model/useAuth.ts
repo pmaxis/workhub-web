@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { authApi } from '../api/auth.api';
+import { authApi } from '@/features/auth/api/auth.api';
 import { profileApi } from '@/features/profile';
-import type { AuthUser, LoginPayload, RegisterPayload } from './types';
+import type { AuthUser, LoginPayload, RegisterPayload } from '@/features/auth/model/types';
 
 type AccessTokenPayload = {
   userId: string;

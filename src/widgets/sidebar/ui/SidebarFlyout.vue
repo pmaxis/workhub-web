@@ -31,8 +31,8 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import type { NavGroup } from '../model/useSidebarNav';
-import NavItem from './NavItem.vue';
+import type { NavGroup } from '@/widgets/sidebar/model/useSidebarNav';
+import NavItem from '@/widgets/sidebar/ui/NavItem.vue';
 
 defineProps<{
   group: NavGroup;

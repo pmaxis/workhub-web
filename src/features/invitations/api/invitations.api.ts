@@ -7,7 +7,6 @@ export type Invitation = {
   companyId: string | null;
   expiresAt: string;
   createdAt: string;
-  /** One-time, only in create response for building invite link */
   token?: string;
 };
 

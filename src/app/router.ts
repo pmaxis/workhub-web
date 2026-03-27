@@ -43,7 +43,6 @@ const router = createRouter({
           name: 'notifications',
           component: () => import('@/pages/NotificationsPage.vue'),
         },
-        // Робота
         {
           path: 'projects',
           name: 'projects',
@@ -92,7 +91,6 @@ const router = createRouter({
           component: () => import('@/pages/PlaceholderPage.vue'),
           meta: { pageTitle: 'Тайм-трекер', pageDescription: 'Відстеження часу' },
         },
-        // Клієнти
         {
           path: 'clients',
           name: 'clients',
@@ -135,7 +133,6 @@ const router = createRouter({
           component: () => import('@/pages/PlaceholderPage.vue'),
           meta: { pageTitle: 'Нотатки по клієнтах' },
         },
-        // Фінанси
         {
           path: 'invoices',
           name: 'invoices',
@@ -172,7 +169,6 @@ const router = createRouter({
           component: () => import('@/pages/PlaceholderPage.vue'),
           meta: { pageTitle: 'Аналітика доходів' },
         },
-        // Планування
         {
           path: 'calendar',
           name: 'calendar',
@@ -191,7 +187,6 @@ const router = createRouter({
           component: () => import('@/pages/PlaceholderPage.vue'),
           meta: { pageTitle: 'Нагадування', pageDescription: 'Список нагадувань' },
         },
-        // Second Brain
         {
           path: 'notes',
           name: 'notes',
@@ -273,7 +268,8 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
+router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+  void from;
   const auth = useAuth();
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
     await auth.init();

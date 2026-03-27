@@ -15,9 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { useSidebarNav } from '../model/useSidebarNav';
-import SidebarNavList from './SidebarNavList.vue';
-import SidebarFlyout from './SidebarFlyout.vue';
+import { useSidebarNav } from '@/widgets/sidebar/model/useSidebarNav';
+import SidebarNavList from '@/widgets/sidebar/ui/SidebarNavList.vue';
+import SidebarFlyout from '@/widgets/sidebar/ui/SidebarFlyout.vue';
 
 const {
   navStructure,

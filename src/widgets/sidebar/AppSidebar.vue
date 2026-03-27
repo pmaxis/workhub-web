@@ -29,10 +29,10 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuth } from '@/features/auth';
-import SidebarHeader from './ui/SidebarHeader.vue';
-import SidebarMain from './ui/SidebarMain.vue';
-import SidebarFooter from './ui/SidebarFooter.vue';
-import SidebarUserMenu from './ui/SidebarUserMenu.vue';
+import SidebarHeader from '@/widgets/sidebar/ui/SidebarHeader.vue';
+import SidebarMain from '@/widgets/sidebar/ui/SidebarMain.vue';
+import SidebarFooter from '@/widgets/sidebar/ui/SidebarFooter.vue';
+import SidebarUserMenu from '@/widgets/sidebar/ui/SidebarUserMenu.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -41,7 +41,7 @@ const auth = useAuth();
 const footerRef = ref<InstanceType<typeof SidebarFooter> | null>(null);
 const userMenuRef = ref<InstanceType<typeof SidebarUserMenu> | null>(null);
 const isUserMenuOpen = ref(false);
-const hasNotifications = ref(true); // TODO: отримувати з API
+const hasNotifications = ref(true);
 
 const userPib = computed(() => {
   const u = auth.user;

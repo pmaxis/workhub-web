@@ -9,24 +9,14 @@
       :aria-label="ariaLabel"
       @click.stop="toggle"
     >
-      <svg
-        class="h-4 w-4"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <circle cx="12" cy="5" r="1.5" />
-        <circle cx="12" cy="12" r="1.5" />
-        <circle cx="12" cy="19" r="1.5" />
-      </svg>
+      <Icon name="ellipsis-vertical" />
     </button>
   </div>
   <Teleport to="body">
     <div
       v-if="open"
       ref="panelRef"
-      class="fixed z-[200] min-w-[11rem] rounded-lg border border-zinc-200 bg-white py-1 text-left shadow-lg"
+      class="fixed z-200 min-w-44 rounded-lg border border-zinc-200 bg-white py-1 text-left shadow-lg"
       :style="panelStyle"
       role="menu"
       @click="close"
@@ -38,6 +28,7 @@
 
 <script setup lang="ts">
 import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
+import Icon from '@/shared/ui/Icon/Icon.vue';
 
 const props = withDefaults(
   defineProps<{

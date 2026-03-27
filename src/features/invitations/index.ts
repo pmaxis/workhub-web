@@ -3,4 +3,4 @@ export {
   type Invitation,
   type InvitationStatus,
   type ClientItem,
-} from './api/invitations.api';
+} from '@/features/invitations/api/invitations.api';

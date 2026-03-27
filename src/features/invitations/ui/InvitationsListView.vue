@@ -1,0 +1,108 @@
+<template>
+  <div class="space-y-6">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-semibold text-zinc-900">Запрошення</h1>
+        <p class="mt-1 text-zinc-600">Запрошення на реєстрацію в системі</p>
+      </div>
+      <router-link
+        :to="{ name: 'invitationCreate' }"
+        class="inline-flex items-center rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-black focus:outline-none"
+      >
+        Нове запрошення
+      </router-link>
+    </div>
+
+    <TableCard
+      :loading="loading"
+      :error="error"
+      :empty="invitations.length === 0"
+      empty-message="Немає активних запрошень"
+    >
+      <Table fixed>
+        <TableHead>
+          <tr>
+            <TableHeadCell>Email</TableHeadCell>
+            <TableHeadCell>Посилання</TableHeadCell>
+            <TableHeadCell>Дійсне до</TableHeadCell>
+            <TableHeadCell align="right">Дії</TableHeadCell>
+          </tr>
+        </TableHead>
+        <TableBody>
+          <TableRow v-for="inv in invitations" :key="inv.id">
+            <TableCell nowrap>{{ inv.email }}</TableCell>
+            <TableCell tone="plain">
+              <div v-if="inv.token" class="flex items-center gap-2">
+                <code
+                  class="min-w-0 w-50 truncate rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-xs text-zinc-700"
+                >
+                  {{ buildInviteLink(inv.token) }}
+                </code>
+                <button
+                  type="button"
+                  class="shrink-0 cursor-pointer rounded p-0.5 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700 focus:outline-none"
+                  title="Копіювати посилання"
+                  @click="inv.token && copyInviteLink(inv.token)"
+                >
+                  <Icon name="copy" />
+                </button>
+              </div>
+              <span v-else class="text-zinc-400">—</span>
+            </TableCell>
+            <TableCell nowrap tone="muted">{{ formatDate(inv.expiresAt) }}</TableCell>
+            <TableCell align="right" nowrap tone="plain">
+              <Dropdown>
+                <button
+                  type="button"
+                  role="menuitem"
+                  class="block w-full px-3 py-2 text-left text-sm text-zinc-700 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  :disabled="resendingId === inv.id || deletingId === inv.id"
+                  @click="resendInvitation(inv.id)"
+                >
+                  {{ resendingId === inv.id ? 'Надсилання…' : 'Надіслати знову' }}
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  class="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  :disabled="deletingId === inv.id || resendingId === inv.id"
+                  @click="deleteInvitation(inv.id)"
+                >
+                  {{ deletingId === inv.id ? 'Видалення…' : 'Видалити' }}
+                </button>
+              </Dropdown>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableCard>
+  </div>
+</template>
+
+<script setup lang="ts">
+import {
+  Dropdown,
+  Icon,
+  Table,
+  TableBody,
+  TableCard,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+} from '@/shared/ui';
+import { useInvitationsList } from '@/features/invitations/model/useInvitationsList';
+
+const {
+  invitations,
+  loading,
+  error,
+  resendingId,
+  deletingId,
+  formatDate,
+  buildInviteLink,
+  resendInvitation,
+  deleteInvitation,
+  copyInviteLink,
+} = useInvitationsList();
+</script>

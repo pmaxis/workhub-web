@@ -1,2 +1,2 @@
-export { profileApi } from './api/profile.api';
-export type { UpdateProfilePayload } from './api/profile.api';
+export { profileApi } from '@/features/profile/api/profile.api';
+export type { UpdateProfilePayload } from '@/features/profile/api/profile.api';

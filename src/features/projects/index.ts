@@ -3,4 +3,4 @@ export {
   type Project,
   type CreateProjectPayload,
   type UpdateProjectPayload,
-} from './api/projects.api';
+} from '@/features/projects/api/projects.api';

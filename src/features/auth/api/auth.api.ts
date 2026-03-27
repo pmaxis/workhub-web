@@ -1,5 +1,5 @@
 import { apiClient } from '@/shared/api/client';
-import type { LoginPayload, LoginResponse, RegisterPayload } from '../model/types';
+import type { LoginPayload, LoginResponse, RegisterPayload } from '@/features/auth/model/types';
 
 export const authApi = {
   login: (payload: LoginPayload) =>
