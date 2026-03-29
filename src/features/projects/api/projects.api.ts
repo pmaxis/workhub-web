@@ -4,7 +4,7 @@ export type Project = {
   id: string;
   name: string;
   description: string | null;
-  clientProfileId: string | null;
+  ownerId: string;
   createdAt: string;
   updatedAt: string;
   tasksCount?: number;
@@ -13,13 +13,11 @@ export type Project = {
 export type CreateProjectPayload = {
   name: string;
   description?: string;
-  clientProfileId?: string;
 };
 
 export type UpdateProjectPayload = {
   name?: string;
   description?: string | null;
-  clientProfileId?: string | null;
 };
 
 export const projectsApi = {
