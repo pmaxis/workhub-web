@@ -9,10 +9,11 @@ import IconBell from '@/shared/ui/Icon/icons/IconBell.vue';
 import IconChevronLeft from '@/shared/ui/Icon/icons/IconChevronLeft.vue';
 import IconCopy from '@/shared/ui/Icon/icons/IconCopy.vue';
 import IconEllipsisVertical from '@/shared/ui/Icon/icons/IconEllipsisVertical.vue';
+import IconPencil from '@/shared/ui/Icon/icons/IconPencil.vue';
 
 defineOptions({ inheritAttrs: false });
 
-export type IconName = 'chevron-left' | 'copy' | 'ellipsis-vertical' | 'bell';
+export type IconName = 'chevron-left' | 'copy' | 'ellipsis-vertical' | 'bell' | 'pencil';
 
 const props = withDefaults(
   defineProps<{
@@ -29,6 +30,7 @@ const iconMap = {
   copy: IconCopy,
   bell: IconBell,
   'ellipsis-vertical': IconEllipsisVertical,
+  pencil: IconPencil,
 } as const;
 
 const iconComponent = computed(() => iconMap[props.name]);

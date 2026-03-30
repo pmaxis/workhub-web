@@ -6,15 +6,13 @@
           <h2 class="text-base font-medium text-zinc-900">Мій акаунт</h2>
           <p class="mt-1 text-sm text-zinc-600">Перегляд та редагування профілю.</p>
         </div>
-        <Dropdown aria-label="Дії з профілем">
-          <router-link
-            :to="{ name: 'myAccountEdit' }"
-            role="menuitem"
-            class="block px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
-          >
-            Редагувати профіль
-          </router-link>
-        </Dropdown>
+        <router-link
+          :to="{ name: 'myAccountEdit' }"
+          class="rounded-md p-1.5 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0"
+          aria-label="Редагувати профіль"
+        >
+          <Icon name="pencil" />
+        </router-link>
       </div>
 
       <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -50,7 +48,9 @@
       </p>
 
       <div v-if="loading" class="text-sm text-zinc-500">Завантаження сесій...</div>
-      <div v-else-if="sessions.length === 0" class="text-sm text-zinc-600">Активні сесії не знайдено.</div>
+      <div v-else-if="sessions.length === 0" class="text-sm text-zinc-600">
+        Активні сесії не знайдено.
+      </div>
       <div v-else class="space-y-2">
         <MyAccountSessionRow
           v-for="session in sessions"
@@ -68,7 +68,7 @@
 <script setup lang="ts">
 import { useMyAccount } from '@/features/profile/model/useMyAccount';
 import MyAccountSessionRow from '@/features/profile/ui/MyAccountSessionRow.vue';
-import { Dropdown } from '@/shared/ui';
+import { Icon } from '@/shared/ui';
 
 const {
   auth,
