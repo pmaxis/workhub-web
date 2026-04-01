@@ -30,7 +30,8 @@ export function useTaskForm() {
   async function loadProjects(): Promise<void> {
     loadError.value = '';
     try {
-      projects.value = await projectsApi.list();
+      const result = await projectsApi.list({ limit: 100 });
+      projects.value = result.data;
     } catch {
       projects.value = [];
       loadError.value = 'Не вдалося завантажити проєкти';

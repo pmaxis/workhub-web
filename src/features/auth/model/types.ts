@@ -18,6 +18,4 @@ export interface LoginResponse {
   accessToken: string;
 }
 
-export interface AuthUser extends User {
-  permissions?: string[];
-}
+export type AuthUser = User;

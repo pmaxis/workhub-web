@@ -4,6 +4,7 @@ export interface User {
   firstName: string;
   lastName: string;
   thirdName?: string | null;
+  permissions: string[];
   createdAt: string;
   updatedAt: string;
 }

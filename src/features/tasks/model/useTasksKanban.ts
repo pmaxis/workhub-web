@@ -85,7 +85,8 @@ export function useTasksKanban(options?: { projectId?: MaybeRefOrGetter<string |
       return;
     }
     try {
-      projects.value = await projectsApi.list();
+      const result = await projectsApi.list({ limit: 100 });
+      projects.value = result.data;
     } catch {
       projects.value = [];
     }
