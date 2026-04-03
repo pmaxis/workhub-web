@@ -7,4 +7,7 @@ export interface User {
   permissions: string[];
   createdAt: string;
   updatedAt: string;
+  hasFreelancerProfile?: boolean;
+  hasClientProfile?: boolean;
+  hasCompanyMembership?: boolean;
 }

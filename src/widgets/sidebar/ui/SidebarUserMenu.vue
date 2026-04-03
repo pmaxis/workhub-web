@@ -24,6 +24,13 @@
       >
         Мій акаунт
       </Link>
+      <Link
+        v-if="showCompanySettings"
+        :to="{ name: 'companySettings' }"
+        class="block w-full rounded-lg px-3 py-2 text-sm text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 focus:outline-none"
+      >
+        Налаштування компанії
+      </Link>
     </div>
 
     <div class="border-t border-zinc-200 p-3">
@@ -39,16 +46,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { User } from '@/entities/user/types';
 import { Avatar, Link } from '@/shared/ui';
 
-defineProps<{
+const props = defineProps<{
   user: User | null;
   userPib: string;
   userInitials: string;
   isOpen: boolean;
 }>();
+
+const showCompanySettings = computed(() => {
+  const u = props.user;
+  if (!u || u.hasFreelancerProfile === true) return false;
+  return true;
+});
 
 defineEmits<{
   logout: [];

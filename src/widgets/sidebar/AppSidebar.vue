@@ -86,7 +86,7 @@ onBeforeUnmount(() => {
 watch(
   () => route.name,
   (name) => {
-    if (name === 'myAccount' || name === 'myAccountEdit') {
+    if (name === 'myAccount' || name === 'myAccountEdit' || name === 'companySettings') {
       isUserMenuOpen.value = false;
     }
   },

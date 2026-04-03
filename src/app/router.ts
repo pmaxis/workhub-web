@@ -39,6 +39,12 @@ const router = createRouter({
           component: () => import('@/pages/MyAccountEditPage.vue'),
         },
         {
+          path: 'company/settings',
+          name: 'companySettings',
+          component: () => import('@/pages/CompanySettingsPage.vue'),
+          meta: { pageTitle: 'Налаштування компанії', pageDescription: 'Параметри вашої компанії' },
+        },
+        {
           path: 'notifications',
           name: 'notifications',
           component: () => import('@/pages/NotificationsPage.vue'),
