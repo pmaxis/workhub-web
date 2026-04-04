@@ -14,7 +14,14 @@ const SERVICE_UNAVAILABLE = JSON.stringify({
 function rewriteSetCookiePaths(cookies: string | string[] | undefined): string[] | undefined {
   if (!cookies) return undefined;
   const list = Array.isArray(cookies) ? cookies : [cookies];
-  return list.map((cookie) => cookie.replace(/(;\s*[Pp]ath=)(\/)/g, '$1/api/'));
+  return list.map((cookie) =>
+    cookie.replace(/;\s*([Pp]ath=)([^;]+)/g, (_m, name: string, raw: string) => {
+      const path = raw.trim();
+      if (path === '/' || path === '') return `; ${name}/api/`;
+      if (path.startsWith('/api')) return `; ${name}${path}`;
+      return `; ${name}/api${path}`;
+    }),
+  );
 }
 
 function silentApiProxy(): import('vite').Plugin {

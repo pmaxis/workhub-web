@@ -15,6 +15,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV VITE_API_BASE_URL=/api
+ENV VITE_API_VERSION=v1
 RUN pnpm build
 
 # Production - nginx

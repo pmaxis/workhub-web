@@ -46,9 +46,9 @@ export function setAuthGetter(fn: AuthTokenGetter): void {
 }
 
 const http = axios.create({
-  baseURL: config.apiBaseUrl,
+  baseURL: config.apiRequestBaseUrl,
   headers: { 'Content-Type': 'application/json' },
-  withCredentials: false,
+  withCredentials: true,
 });
 
 http.interceptors.request.use((cfg: InternalAxiosRequestConfig & ApiRequestConfig) => {
