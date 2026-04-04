@@ -59,7 +59,7 @@ const props = defineProps<{
 
 const showCompanySettings = computed(() => {
   const u = props.user;
-  if (!u || u.hasFreelancerProfile === true) return false;
+  if (!u || u.accountType === 'freelancer') return false;
   return true;
 });
 

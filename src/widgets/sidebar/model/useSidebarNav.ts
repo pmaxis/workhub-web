@@ -243,10 +243,10 @@ export function useSidebarNav() {
     if (!u) {
       return freelancerNavStructure;
     }
-    if (u.hasFreelancerProfile === true) {
+    if (u.accountType === 'freelancer') {
       return freelancerNavStructure;
     }
-    return buildCompanyMemberNav(u.hasCompanyMembership === true);
+    return buildCompanyMemberNav(u.hasCompanyMembership);
   });
 
   const openFlyoutId = ref<string | null>(null);

@@ -40,7 +40,7 @@ import { useClientsList } from '@/features/invitations/model/useClientsList';
 const auth = useAuth();
 const { clients, loading, error, formatDate } = useClientsList();
 
-const isFreelancerNav = computed(() => auth.user?.hasFreelancerProfile === true);
+const isFreelancerNav = computed(() => auth.user?.accountType === 'freelancer');
 
 const pageTitle = computed(() =>
   isFreelancerNav.value ? 'Клієнти' : 'Співробітники',
