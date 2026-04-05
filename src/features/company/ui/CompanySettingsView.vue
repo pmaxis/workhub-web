@@ -13,14 +13,62 @@
         class="rounded-xl border border-zinc-200 bg-zinc-50 p-6"
       >
         <h2 class="text-base font-medium text-zinc-900">Ваші компанії</h2>
-        <ul class="mt-3 space-y-2">
+        <p v-if="deleteError" class="mt-2 text-sm text-red-600">{{ deleteError }}</p>
+        <ul class="mt-3 space-y-3">
           <li
             v-for="c in companies"
             :key="c.id"
-            class="flex flex-wrap items-baseline justify-between gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-3"
+            class="rounded-lg border border-zinc-200 bg-white px-4 py-3"
           >
-            <span class="font-medium text-zinc-900">{{ c.name }}</span>
-            <span class="text-sm text-zinc-500">{{ c.slug }}</span>
+            <template v-if="editingId === c.id">
+              <Form class="space-y-3" @submit.prevent="saveEdit">
+                <FormField
+                  v-model="editName"
+                  label="Назва компанії"
+                  :id="`company-edit-${c.id}`"
+                  type="text"
+                  required
+                  autocomplete="organization"
+                />
+                <p v-if="updateError" class="text-sm text-red-600">{{ updateError }}</p>
+                <div class="flex flex-wrap justify-end gap-2">
+                  <Button type="button" variant="secondary" :disabled="updating" @click="cancelEdit">
+                    Скасувати
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    :disabled="updating || editName.trim().length < 2"
+                  >
+                    {{ updating ? 'Збереження…' : 'Зберегти' }}
+                  </Button>
+                </div>
+              </Form>
+            </template>
+            <div v-else class="flex items-center justify-between gap-3 py-1">
+              <div class="min-w-0 flex-1 text-left">
+                <span class="font-medium text-zinc-900">{{ c.name }}</span>
+                <span class="mt-0.5 block text-sm text-zinc-500">{{ c.slug }}</span>
+              </div>
+              <Dropdown :aria-label="`Дії: ${c.name}`">
+                <button
+                  type="button"
+                  role="menuitem"
+                  class="block w-full px-3 py-2 text-left text-sm text-zinc-700 hover:bg-zinc-50"
+                  @click="startEdit(c)"
+                >
+                  Редагувати
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  class="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+                  @click="confirmRemoveCompany(c)"
+                >
+                  Видалити
+                </button>
+              </Dropdown>
+            </div>
           </li>
         </ul>
       </div>
@@ -53,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import { Button, Form, FormField } from '@/shared/ui';
+import { Button, Dropdown, Form, FormField } from '@/shared/ui';
 import { useCompanySettings } from '@/features/company/model/useCompanySettings';
 
 const {
@@ -64,5 +112,14 @@ const {
   createError,
   hasCompany,
   createCompany,
+  editingId,
+  editName,
+  updating,
+  updateError,
+  deleteError,
+  startEdit,
+  cancelEdit,
+  saveEdit,
+  confirmRemoveCompany,
 } = useCompanySettings();
 </script>

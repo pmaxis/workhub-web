@@ -9,4 +9,7 @@ export type Company = {
 export const companiesApi = {
   list: () => apiClient.get<Company[]>('/companies'),
   create: (payload: { name: string }) => apiClient.post<Company>('/companies', payload),
+  update: (id: string, payload: { name: string }) =>
+    apiClient.patch<Company>(`/companies/${encodeURIComponent(id)}`, payload),
+  remove: (id: string) => apiClient.delete(`/companies/${encodeURIComponent(id)}`),
 };

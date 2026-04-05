@@ -15,7 +15,7 @@
 import { computed } from 'vue';
 import type { RouteLocationRaw } from 'vue-router';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'bare';
 
 const props = withDefaults(
   defineProps<{
@@ -42,6 +42,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   primary: 'bg-zinc-900 text-white hover:bg-black',
   secondary: 'border border-zinc-400 bg-transparent text-zinc-700 hover:bg-zinc-100',
   ghost: 'border border-zinc-300 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900',
+  bare: 'border-0 bg-transparent text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900',
 };
 
 const sizeClasses: Record<string, string> = {
