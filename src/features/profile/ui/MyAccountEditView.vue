@@ -6,21 +6,21 @@
         class="inline-flex items-center gap-1 text-sm text-zinc-600 hover:text-zinc-900"
       >
         <Icon name="chevron-left" />
-        Назад
+        Back
       </router-link>
     </div>
 
     <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-6">
       <div>
-        <h2 class="text-base font-medium text-zinc-900">Редагування акаунта</h2>
-        <p class="mt-1 text-sm text-zinc-600">Змініть ПІБ, email та пароль.</p>
+        <h2 class="text-base font-medium text-zinc-900">Edit account</h2>
+        <p class="mt-1 text-sm text-zinc-600">Update your name, email, and password.</p>
       </div>
 
       <Form class="mt-5" @submit.prevent="submitProfile">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormField v-model="form.lastName" label="Прізвище" id="lastName" type="text" required />
-          <FormField v-model="form.firstName" label="Ім'я" id="firstName" type="text" required />
-          <FormField v-model="form.thirdName" label="По батькові" id="thirdName" type="text" />
+          <FormField v-model="form.lastName" label="Last name" id="lastName" type="text" required />
+          <FormField v-model="form.firstName" label="First name" id="firstName" type="text" required />
+          <FormField v-model="form.thirdName" label="Middle name" id="thirdName" type="text" />
           <FormField v-model="form.email" label="Email" id="email" type="email" required />
           <div class="md:col-span-2">
             <FormField
@@ -28,19 +28,19 @@
               id="password"
               type="password"
               minlength="8"
-              placeholder="Мінімум 8 символів"
+              placeholder="At least 8 characters"
             >
-              <template #label> Новий пароль (залиште порожнім, щоб не змінювати) </template>
+              <template #label> New password (leave blank to keep current) </template>
             </FormField>
           </div>
         </div>
         <p v-if="profileError" class="text-sm text-red-600">{{ profileError }}</p>
         <div class="flex justify-end gap-2">
           <Button type="button" variant="ghost" :disabled="profileSaving" @click="cancel">
-            Скасувати
+            Cancel
           </Button>
           <Button type="submit" variant="primary" :disabled="profileSaving">
-            {{ profileSaving ? 'Збереження…' : 'Зберегти' }}
+            {{ profileSaving ? 'Saving…' : 'Save' }}
           </Button>
         </div>
       </Form>

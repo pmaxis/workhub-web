@@ -10,6 +10,5 @@ function joinBasePath(base: string, segment: string): string {
 export const config = {
   apiBaseUrl,
   apiVersion,
-  /** Base URL for HTTP API calls (includes version segment, e.g. `/api/v1`). */
   apiRequestBaseUrl: joinBasePath(apiBaseUrl, apiVersion),
 } as const;

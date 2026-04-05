@@ -39,7 +39,7 @@ export function useCompanySettings() {
       await auth.fetchMe();
       await load();
     } catch (e: unknown) {
-      createError.value = e instanceof Error ? e.message : 'Не вдалося створити компанію';
+      createError.value = e instanceof Error ? e.message : 'Could not create company';
     } finally {
       creating.value = false;
     }
@@ -70,14 +70,18 @@ export function useCompanySettings() {
       await auth.fetchMe();
       await load();
     } catch (e: unknown) {
-      updateError.value = e instanceof Error ? e.message : 'Не вдалося оновити компанію';
+      updateError.value = e instanceof Error ? e.message : 'Could not update company';
     } finally {
       updating.value = false;
     }
   }
 
   function confirmRemoveCompany(c: Company) {
-    if (!window.confirm(`Видалити компанію «${c.name}»? Учасників буде від’єднано; проєкти залишаться без прив’язки до компанії.`)) {
+    if (
+      !window.confirm(
+        `Delete company “${c.name}”? Members will be unlinked; projects will no longer be tied to this company.`,
+      )
+    ) {
       return;
     }
     void (async () => {
@@ -88,7 +92,7 @@ export function useCompanySettings() {
         await auth.fetchMe();
         await load();
       } catch (e: unknown) {
-        deleteError.value = e instanceof Error ? e.message : 'Не вдалося видалити компанію';
+        deleteError.value = e instanceof Error ? e.message : 'Could not delete company';
       }
     })();
   }

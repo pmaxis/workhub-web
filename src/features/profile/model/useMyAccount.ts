@@ -26,7 +26,7 @@ function formatDate(value?: string): string {
   if (!value) return '—';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '—';
-  return new Intl.DateTimeFormat('uk-UA', {
+  return new Intl.DateTimeFormat('en-US', {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(date);
@@ -64,7 +64,7 @@ export function useMyAccount() {
       const normalized = allRaw.map(normalizeSession);
       sessions.value = normalized.filter((item) => item.userId === auth.user?.id);
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Не вдалося завантажити сесії';
+      error.value = e instanceof Error ? e.message : 'Could not load sessions';
       sessions.value = [];
     } finally {
       loading.value = false;
@@ -78,7 +78,7 @@ export function useMyAccount() {
       await apiClient.delete(`/sessions/${sessionId}`);
       sessions.value = sessions.value.filter((session) => session.id !== sessionId);
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Не вдалося видалити сесію';
+      error.value = e instanceof Error ? e.message : 'Could not remove session';
     } finally {
       deletingSessionId.value = null;
     }

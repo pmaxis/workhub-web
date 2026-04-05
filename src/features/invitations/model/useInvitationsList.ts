@@ -6,7 +6,7 @@ function formatDate(value?: string): string {
   if (!value) return '—';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '—';
-  return new Intl.DateTimeFormat('uk-UA', {
+  return new Intl.DateTimeFormat('en-US', {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(date);
@@ -25,7 +25,7 @@ export function useInvitationsList() {
     try {
       invitations.value = await invitationsApi.list({ status: 'PENDING' });
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Не вдалося завантажити запрошення';
+      error.value = e instanceof Error ? e.message : 'Could not load invitations';
       invitations.value = [];
     } finally {
       loading.value = false;
@@ -38,7 +38,7 @@ export function useInvitationsList() {
       await invitationsApi.resend(id);
       await loadInvitations();
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Не вдалося надіслати знову';
+      error.value = e instanceof Error ? e.message : 'Could not resend';
     } finally {
       resendingId.value = null;
     }
@@ -50,7 +50,7 @@ export function useInvitationsList() {
       await invitationsApi.remove(id);
       invitations.value = invitations.value.filter((i) => i.id !== id);
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Не вдалося видалити';
+      error.value = e instanceof Error ? e.message : 'Could not delete';
     } finally {
       deletingId.value = null;
     }

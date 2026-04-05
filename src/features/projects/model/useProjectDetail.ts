@@ -16,7 +16,7 @@ export function useProjectDetail() {
     try {
       project.value = await projectsApi.get(id);
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Не вдалося завантажити';
+      error.value = e instanceof Error ? e.message : 'Could not load';
       project.value = null;
     } finally {
       loading.value = false;

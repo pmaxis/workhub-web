@@ -2,21 +2,21 @@
   <div class="space-y-6">
     <div class="flex flex-wrap items-start justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-semibold text-zinc-900">Проєкти</h1>
-        <p class="mt-1 text-zinc-600">Ваші проєкти та кількість задач</p>
+        <h1 class="text-2xl font-semibold text-zinc-900">Projects</h1>
+        <p class="mt-1 text-zinc-600">Your projects and task counts</p>
       </div>
       <router-link
         :to="{ name: 'projectCreate' }"
         class="inline-flex items-center rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800"
       >
-        Новий проєкт
+        New project
       </router-link>
     </div>
 
     <input
       v-model="search"
       type="search"
-      placeholder="Пошук проєктів…"
+      placeholder="Search projects…"
       class="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 outline-none focus:border-zinc-400 focus:ring-2 focus:ring-zinc-200 sm:max-w-xs"
     />
 
@@ -31,7 +31,7 @@
       v-if="totalPages > 1"
       class="flex items-center justify-between gap-2 text-sm text-zinc-600"
     >
-      <span>Сторінка {{ page }} з {{ totalPages }} (всього {{ total }})</span>
+      <span>Page {{ page }} of {{ totalPages }} ({{ total }} total)</span>
       <div class="flex gap-1">
         <button
           :disabled="page <= 1"

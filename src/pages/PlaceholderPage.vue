@@ -14,7 +14,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 
 const title = computed(
-  () => (route.meta.pageTitle as string) ?? route.name?.toString() ?? 'Сторінка',
+  () => (route.meta.pageTitle as string) ?? route.name?.toString() ?? 'Page',
 );
 const description = computed(
   () => route.meta.pageDescription as string | undefined,

@@ -22,14 +22,14 @@
         :to="{ name: 'myAccount' }"
         class="block w-full rounded-lg px-3 py-2 text-sm text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 focus:outline-none"
       >
-        Мій акаунт
+        My account
       </Link>
       <Link
         v-if="showCompanySettings"
         :to="{ name: 'companySettings' }"
         class="block w-full rounded-lg px-3 py-2 text-sm text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 focus:outline-none"
       >
-        Налаштування компанії
+        Company settings
       </Link>
     </div>
 
@@ -39,7 +39,7 @@
         class="flex w-full cursor-pointer items-center justify-center rounded-lg border border-red-200 px-3 py-2 text-sm text-red-700 transition-colors hover:bg-red-50 focus:outline-none"
         @click="$emit('logout')"
       >
-        Вийти
+        Sign out
       </button>
     </div>
   </div>

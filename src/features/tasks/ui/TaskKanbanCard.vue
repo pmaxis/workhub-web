@@ -16,7 +16,7 @@
           {{ task.description }}
         </p>
         <p class="mt-2 text-xs text-zinc-500">
-          <span class="text-zinc-400">Проєкт:</span>
+          <span class="text-zinc-400">Project:</span>
           {{ projectName }}
         </p>
       </div>
@@ -27,7 +27,7 @@
             role="menuitem"
             class="block px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
           >
-            Редагувати
+            Edit
           </router-link>
           <button
             type="button"
@@ -35,7 +35,7 @@
             class="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
             @click="emit('remove', task)"
           >
-            Видалити
+            Delete
           </button>
         </Dropdown>
       </div>

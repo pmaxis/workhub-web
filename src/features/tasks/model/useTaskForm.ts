@@ -34,7 +34,7 @@ export function useTaskForm() {
       projects.value = result.data;
     } catch {
       projects.value = [];
-      loadError.value = 'Не вдалося завантажити проєкти';
+      loadError.value = 'Could not load projects';
     }
   }
 
@@ -47,7 +47,7 @@ export function useTaskForm() {
       description.value = t.description ?? '';
       status.value = t.status;
     } catch (e: unknown) {
-      loadError.value = e instanceof Error ? e.message : 'Не вдалося завантажити задачу';
+      loadError.value = e instanceof Error ? e.message : 'Could not load task';
     }
   }
 
@@ -87,7 +87,7 @@ export function useTaskForm() {
         await router.push(backTo.value);
       } else {
         if (!selectedProjectId.value) {
-          formError.value = 'Оберіть проєкт';
+          formError.value = 'Select a project';
           return;
         }
         await tasksApi.create({
@@ -99,7 +99,7 @@ export function useTaskForm() {
         await router.push({ name: 'tasks' });
       }
     } catch (e: unknown) {
-      formError.value = e instanceof Error ? e.message : 'Не вдалося зберегти';
+      formError.value = e instanceof Error ? e.message : 'Could not save';
     } finally {
       saving.value = false;
     }

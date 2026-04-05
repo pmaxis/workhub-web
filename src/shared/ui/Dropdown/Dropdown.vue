@@ -37,7 +37,7 @@ const props = withDefaults(
   }>(),
   {
     align: 'end',
-    ariaLabel: 'Дії',
+    ariaLabel: 'Actions',
   },
 );
 

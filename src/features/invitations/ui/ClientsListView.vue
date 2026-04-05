@@ -14,9 +14,9 @@
       <Table>
         <TableHead>
           <tr>
-            <TableHeadCell>ПІБ</TableHeadCell>
-            <TableHeadCell>Пошта</TableHeadCell>
-            <TableHeadCell>Підтверджено</TableHeadCell>
+            <TableHeadCell>Full name</TableHeadCell>
+            <TableHeadCell>Email</TableHeadCell>
+            <TableHeadCell>Confirmed</TableHeadCell>
           </tr>
         </TableHead>
         <TableBody>
@@ -43,18 +43,18 @@ const { clients, loading, error, formatDate } = useClientsList();
 const isFreelancerNav = computed(() => auth.user?.accountType === 'freelancer');
 
 const pageTitle = computed(() =>
-  isFreelancerNav.value ? 'Клієнти' : 'Співробітники',
+  isFreelancerNav.value ? 'Clients' : 'Team members',
 );
 
 const pageDescription = computed(() =>
   isFreelancerNav.value
-    ? 'Клієнти з підтвердженим статусом запрошення'
-    : 'Колеги з компанії та запрошені за підтвердженим запрошенням',
+    ? 'Clients with a confirmed invitation'
+    : 'Company colleagues and users who joined via a confirmed invitation',
 );
 
 const emptyMessage = computed(() =>
   isFreelancerNav.value
-    ? 'Немає клієнтів з підтвердженим запрошенням'
-    : 'Немає співробітників для відображення',
+    ? 'No clients with a confirmed invitation'
+    : 'No team members to show',
 );
 </script>

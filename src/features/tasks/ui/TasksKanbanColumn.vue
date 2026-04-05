@@ -46,7 +46,7 @@
         v-if="list.length === 0"
         class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs text-zinc-400"
       >
-        Перетягніть сюди задачу
+        Drop a task here
       </p>
     </div>
   </section>

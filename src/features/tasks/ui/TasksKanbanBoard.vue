@@ -3,7 +3,7 @@
     class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50/80 p-4"
   >
     <div v-if="loading" class="flex flex-1 items-center justify-center py-12 text-sm text-zinc-500">
-      Завантаження...
+      Loading...
     </div>
     <div
       v-else-if="error"
@@ -48,11 +48,11 @@ const props = defineProps<{
 }>();
 
 const emptyHint = computed(() =>
-  props.projectId ? 'Немає задач у цьому проєкті.' : 'Немає задач. Створіть першу.',
+  props.projectId ? 'No tasks in this project.' : 'No tasks yet. Create the first one.',
 );
 
 const boardAriaLabel = computed(() =>
-  props.projectId ? 'Канбан задач проєкту' : 'Канбан-дошка задач',
+  props.projectId ? 'Project task board' : 'Task kanban board',
 );
 
 const {

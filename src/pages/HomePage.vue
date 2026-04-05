@@ -1,9 +1,9 @@
 <template>
   <div class="space-y-6">
     <div>
-      <h1 class="text-2xl font-semibold text-zinc-900">Головна</h1>
+      <h1 class="text-2xl font-semibold text-zinc-900">Home</h1>
       <p class="mt-1 text-zinc-600">
-        Ласкаво просимо до WorkHub
+        Welcome to WorkHub
       </p>
     </div>
   </div>

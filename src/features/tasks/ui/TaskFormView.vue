@@ -6,32 +6,32 @@
         class="inline-flex items-center gap-1 text-sm text-zinc-600 hover:text-zinc-900"
       >
         <Icon name="chevron-left" />
-        Назад
+        Back
       </router-link>
     </div>
 
     <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-6">
       <h2 class="text-base font-medium text-zinc-900">
-        {{ isEdit ? 'Редагування задачі' : 'Нова задача' }}
+        {{ isEdit ? 'Edit task' : 'New task' }}
       </h2>
 
       <Form class="mt-5" @submit.prevent="submit">
         <p v-if="loadError" class="text-sm text-red-600">{{ loadError }}</p>
         <FormField
           v-model="selectedProjectId"
-          label="Проєкт"
+          label="Project"
           as="select"
           id="projectId"
-          select-placeholder="Оберіть проєкт"
+          select-placeholder="Select a project"
           :options="projectSelectOptions"
           required
           :disabled="isEdit"
         />
-        <FormField v-model="title" label="Заголовок" id="title" type="text" required />
-        <FormField v-model="description" label="Опис" as="textarea" id="description" rows="3" />
+        <FormField v-model="title" label="Title" id="title" type="text" required />
+        <FormField v-model="description" label="Description" as="textarea" id="description" rows="3" />
         <FormField
           v-model="status"
-          label="Статус"
+          label="Status"
           as="select"
           id="status"
           :options="statusSelectOptions"
@@ -39,14 +39,14 @@
         <p v-if="formError" class="text-sm text-red-600">{{ formError }}</p>
         <div class="flex justify-end gap-2">
           <Button type="button" variant="ghost" :disabled="saving" @click="cancel">
-            Скасувати
+            Cancel
           </Button>
           <Button
             type="submit"
             variant="primary"
             :disabled="saving || !!loadError || !projects.length"
           >
-            {{ saving ? 'Збереження…' : 'Зберегти' }}
+            {{ saving ? 'Saving…' : 'Save' }}
           </Button>
         </div>
       </Form>

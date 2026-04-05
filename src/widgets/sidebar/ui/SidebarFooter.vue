@@ -18,7 +18,7 @@
           ? 'border-red-400 text-red-500 hover:bg-red-50 hover:text-red-600'
           : 'border-zinc-300/40 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900',
       ]"
-      aria-label="Сповіщення"
+      aria-label="Notifications"
       @click="$emit('notifications')"
     >
       <Icon name="bell" size="sm" />

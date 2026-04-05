@@ -30,36 +30,36 @@ export type NavItem = NavLink | NavGroup;
 const homeLink: NavLink = {
   type: 'link',
   name: 'home',
-  label: 'Головна',
+  label: 'Home',
   to: { name: 'home' },
 };
 
 const financeGroup: NavGroup = {
   type: 'group',
   id: 'finance',
-  label: 'Фінанси',
+  label: 'Finance',
   children: [
     {
       name: 'invoices',
-      label: 'Інвойси',
+      label: 'Invoices',
       to: { name: 'invoices' },
       routeNames: ['invoices', 'invoiceCreate', 'invoiceEdit'],
     },
     {
       name: 'payments',
-      label: 'Платежі',
+      label: 'Payments',
       to: { name: 'payments' },
       routeNames: ['payments'],
     },
     {
       name: 'expenses',
-      label: 'Витрати',
+      label: 'Expenses',
       to: { name: 'expenses' },
       routeNames: ['expenses'],
     },
     {
       name: 'financeAnalytics',
-      label: 'Аналітика',
+      label: 'Analytics',
       to: { name: 'financeAnalytics' },
       routeNames: ['financeAnalytics'],
     },
@@ -73,25 +73,25 @@ const secondBrainGroup: NavGroup = {
   children: [
     {
       name: 'notes',
-      label: 'Нотатки',
+      label: 'Notes',
       to: { name: 'notes' },
       routeNames: ['notes', 'noteCreate', 'noteEdit'],
     },
     {
       name: 'knowledgeBase',
-      label: 'База знань',
+      label: 'Knowledge base',
       to: { name: 'knowledgeBase' },
       routeNames: ['knowledgeBase', 'knowledgeCreate', 'knowledgeEdit'],
     },
     {
       name: 'templates',
-      label: 'Шаблони',
+      label: 'Templates',
       to: { name: 'templates' },
       routeNames: ['templates', 'templateCreate', 'templateEdit'],
     },
     {
       name: 'journal',
-      label: 'Журнал',
+      label: 'Journal',
       to: { name: 'journal' },
       routeNames: ['journal'],
     },
@@ -101,23 +101,23 @@ const secondBrainGroup: NavGroup = {
 const planningGroup: NavGroup = {
   type: 'group',
   id: 'planning',
-  label: 'Планування',
+  label: 'Planning',
   children: [
     {
       name: 'calendar',
-      label: 'Календар',
+      label: 'Calendar',
       to: { name: 'calendar' },
       routeNames: ['calendar'],
     },
     {
       name: 'deadlines',
-      label: 'Дедлайни',
+      label: 'Deadlines',
       to: { name: 'deadlines' },
       routeNames: ['deadlines'],
     },
     {
       name: 'reminders',
-      label: 'Нагадування',
+      label: 'Reminders',
       to: { name: 'reminders' },
       routeNames: ['reminders'],
     },
@@ -132,23 +132,23 @@ const freelancerNavStructure: NavItem[] = [
   {
     type: 'group',
     id: 'work',
-    label: 'Робота',
+    label: 'Work',
     children: [
       {
         name: 'tasks',
-        label: 'Задачі',
+        label: 'Tasks',
         to: { name: 'tasks' },
         routeNames: [...taskRoutes],
       },
       {
         name: 'projects',
-        label: 'Проєкти',
+        label: 'Projects',
         to: { name: 'projects' },
         routeNames: [...projectRoutes],
       },
       {
         name: 'timeTracker',
-        label: 'Тайм-трекер',
+        label: 'Time tracker',
         to: { name: 'timeTracker' },
         routeNames: ['timeTracker'],
       },
@@ -157,29 +157,29 @@ const freelancerNavStructure: NavItem[] = [
   {
     type: 'group',
     id: 'clients',
-    label: 'Клієнти',
+    label: 'Clients',
     children: [
       {
         name: 'invitations',
-        label: 'Запрошення',
+        label: 'Invitations',
         to: { name: 'invitations' },
         routeNames: ['invitations', 'invitationCreate'],
       },
       {
         name: 'clients',
-        label: 'Клієнти',
+        label: 'Clients',
         to: { name: 'clients' },
         routeNames: ['clients', 'clientCreate', 'clientEdit'],
       },
       {
         name: 'clientProjects',
-        label: 'Їхні проєкти',
+        label: 'Their projects',
         to: { name: 'clientProjects' },
         routeNames: ['clientProjects'],
       },
       {
         name: 'clientNotes',
-        label: 'Нотатки',
+        label: 'Notes',
         to: { name: 'clientNotes' },
         routeNames: ['clientNotes'],
       },
@@ -195,14 +195,14 @@ function buildCompanyMemberNav(hasCompany: boolean): NavItem[] {
     {
       type: 'link',
       name: 'projects',
-      label: 'Проєкти',
+      label: 'Projects',
       to: { name: 'projects' },
       routeNames: [...projectRoutes],
     },
     {
       type: 'link',
       name: 'tasks',
-      label: 'Задачі',
+      label: 'Tasks',
       to: { name: 'tasks' },
       routeNames: [...taskRoutes],
     },
@@ -212,17 +212,17 @@ function buildCompanyMemberNav(hasCompany: boolean): NavItem[] {
     workBlocks.push({
       type: 'group',
       id: 'employees',
-      label: 'Співробітники',
+      label: 'Team',
       children: [
         {
           name: 'invitations',
-          label: 'Запрошення',
+          label: 'Invitations',
           to: { name: 'invitations' },
           routeNames: ['invitations', 'invitationCreate'],
         },
         {
           name: 'clients',
-          label: 'Співробітники',
+          label: 'Team members',
           to: { name: 'clients' },
           routeNames: ['clients', 'clientCreate', 'clientEdit'],
         },

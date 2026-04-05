@@ -35,7 +35,7 @@ export function useProjectForm() {
       name.value = p.name;
       description.value = p.description ?? '';
     } catch (e: unknown) {
-      loadError.value = e instanceof Error ? e.message : 'Не вдалося завантажити проєкт';
+      loadError.value = e instanceof Error ? e.message : 'Could not load project';
     }
   }
 
@@ -66,7 +66,7 @@ export function useProjectForm() {
         await router.push({ name: 'projectDetail', params: { id: created.id } });
       }
     } catch (e: unknown) {
-      formError.value = e instanceof Error ? e.message : 'Не вдалося зберегти';
+      formError.value = e instanceof Error ? e.message : 'Could not save';
     } finally {
       saving.value = false;
     }

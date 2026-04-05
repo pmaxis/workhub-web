@@ -2,14 +2,14 @@
   <div class="space-y-6">
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-semibold text-zinc-900">Запрошення</h1>
-        <p class="mt-1 text-zinc-600">Запрошення на реєстрацію в системі</p>
+        <h1 class="text-2xl font-semibold text-zinc-900">Invitations</h1>
+        <p class="mt-1 text-zinc-600">Invitations to register in the app</p>
       </div>
       <router-link
         :to="{ name: 'invitationCreate' }"
         class="inline-flex items-center rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-black focus:outline-none"
       >
-        Нове запрошення
+        New invitation
       </router-link>
     </div>
 
@@ -17,15 +17,15 @@
       :loading="loading"
       :error="error"
       :empty="invitations.length === 0"
-      empty-message="Немає активних запрошень"
+      empty-message="No active invitations"
     >
       <Table fixed>
         <TableHead>
           <tr>
             <TableHeadCell>Email</TableHeadCell>
-            <TableHeadCell>Посилання</TableHeadCell>
-            <TableHeadCell>Дійсне до</TableHeadCell>
-            <TableHeadCell align="right">Дії</TableHeadCell>
+            <TableHeadCell>Link</TableHeadCell>
+            <TableHeadCell>Valid until</TableHeadCell>
+            <TableHeadCell align="right">Actions</TableHeadCell>
           </tr>
         </TableHead>
         <TableBody>
@@ -41,7 +41,7 @@
                 <button
                   type="button"
                   class="shrink-0 cursor-pointer rounded p-0.5 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700 focus:outline-none"
-                  title="Копіювати посилання"
+                  title="Copy link"
                   @click="inv.token && copyInviteLink(inv.token)"
                 >
                   <Icon name="copy" />
@@ -59,7 +59,7 @@
                   :disabled="resendingId === inv.id || deletingId === inv.id"
                   @click="resendInvitation(inv.id)"
                 >
-                  {{ resendingId === inv.id ? 'Надсилання…' : 'Надіслати знову' }}
+                  {{ resendingId === inv.id ? 'Sending…' : 'Resend' }}
                 </button>
                 <button
                   type="button"
@@ -68,7 +68,7 @@
                   :disabled="deletingId === inv.id || resendingId === inv.id"
                   @click="deleteInvitation(inv.id)"
                 >
-                  {{ deletingId === inv.id ? 'Видалення…' : 'Видалити' }}
+                  {{ deletingId === inv.id ? 'Deleting…' : 'Delete' }}
                 </button>
               </Dropdown>
             </TableCell>

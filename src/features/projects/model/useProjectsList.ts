@@ -25,7 +25,7 @@ export function useProjectsList() {
       projects.value = result.data;
       total.value = result.total;
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Не вдалося завантажити проєкти';
+      error.value = e instanceof Error ? e.message : 'Could not load projects';
       projects.value = [];
       total.value = 0;
     } finally {
@@ -39,7 +39,7 @@ export function useProjectsList() {
   }
 
   function confirmRemove(p: Project) {
-    if (!window.confirm(`Видалити проєкт «${p.name}» і всі його задачі?`)) return;
+    if (!window.confirm(`Delete project “${p.name}” and all its tasks?`)) return;
     void (async () => {
       try {
         await projectsApi.remove(p.id);
@@ -48,7 +48,7 @@ export function useProjectsList() {
         }
         await load();
       } catch (e: unknown) {
-        error.value = e instanceof Error ? e.message : 'Не вдалося видалити';
+        error.value = e instanceof Error ? e.message : 'Could not delete';
       }
     })();
   }

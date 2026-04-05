@@ -8,7 +8,7 @@
       <button
         type="button"
         class="mr-2 cursor-pointer rounded p-1 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
-        aria-label="Назад"
+        aria-label="Back"
         @click="$emit('close')"
       >
         <span aria-hidden="true">←</span>

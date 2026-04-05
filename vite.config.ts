@@ -8,7 +8,7 @@ import https from 'node:https';
 
 const API_TARGET = process.env.VITE_API_PROXY_TARGET ?? 'http://localhost:3000';
 const SERVICE_UNAVAILABLE = JSON.stringify({
-  message: 'Сервер тимчасово недоступний',
+  message: 'Server temporarily unavailable',
 });
 
 function rewriteSetCookiePaths(cookies: string | string[] | undefined): string[] | undefined {

@@ -2,12 +2,12 @@
   <div class="rounded-lg border border-zinc-200 bg-white px-3 py-2">
     <div class="flex items-center justify-between gap-3">
       <div class="min-w-0">
-        <p class="truncate text-sm text-zinc-900">{{ session.userAgent || 'Невідомий пристрій' }}</p>
+        <p class="truncate text-sm text-zinc-900">{{ session.userAgent || 'Unknown device' }}</p>
         <p class="mt-1 text-xs text-zinc-500">
-          IP: {{ session.ipAddress || '—' }} | Закінчується: {{ expiresLabel }}
+          IP: {{ session.ipAddress || '—' }} | Expires: {{ expiresLabel }}
         </p>
       </div>
-      <Dropdown aria-label="Дії з сесією">
+      <Dropdown aria-label="Session actions">
         <button
           type="button"
           role="menuitem"
@@ -15,7 +15,7 @@
           :disabled="deleting"
           @click="emit('remove')"
         >
-          {{ deleting ? 'Видалення…' : 'Видалити сесію' }}
+          {{ deleting ? 'Removing…' : 'Remove session' }}
         </button>
       </Dropdown>
     </div>

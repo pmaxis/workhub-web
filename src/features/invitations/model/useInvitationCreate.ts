@@ -15,7 +15,7 @@ export function useInvitationCreate() {
       await invitationsApi.create({ email: newEmail.value.trim() });
       await router.push({ name: 'invitations' });
     } catch (e: unknown) {
-      createError.value = e instanceof Error ? e.message : 'Не вдалося створити запрошення';
+      createError.value = e instanceof Error ? e.message : 'Could not create invitation';
     } finally {
       creating.value = false;
     }

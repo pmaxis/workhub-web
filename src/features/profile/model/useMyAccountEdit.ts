@@ -44,7 +44,7 @@ export function useMyAccountEdit() {
       await auth.fetchMe();
       await router.push({ name: 'myAccount' });
     } catch (e: unknown) {
-      profileError.value = e instanceof Error ? e.message : 'Не вдалося зберегти';
+      profileError.value = e instanceof Error ? e.message : 'Could not save';
     } finally {
       profileSaving.value = false;
     }

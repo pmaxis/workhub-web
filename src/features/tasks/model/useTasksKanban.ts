@@ -5,9 +5,9 @@ import { projectsApi, type Project } from '@/features/projects';
 import { tasksApi, type Task, type TaskStatus } from '@/features/tasks/api/tasks.api';
 
 export const KANBAN_COLUMNS: { status: TaskStatus; title: string }[] = [
-  { status: 'PENDING', title: 'Очікує' },
-  { status: 'IN_PROGRESS', title: 'В роботі' },
-  { status: 'COMPLETED', title: 'Завершено' },
+  { status: 'PENDING', title: 'To do' },
+  { status: 'IN_PROGRESS', title: 'In progress' },
+  { status: 'COMPLETED', title: 'Done' },
 ];
 
 export const KANBAN_GROUP = { name: 'kanban', pull: true, put: true };
@@ -69,7 +69,7 @@ export function useTasksKanban(options?: { projectId?: MaybeRefOrGetter<string |
         tasks.value[idx] = updated;
       }
     } catch (err: unknown) {
-      error.value = err instanceof Error ? err.message : 'Не вдалося оновити статус';
+      error.value = err instanceof Error ? err.message : 'Could not update status';
       syncColumnsFromTasks();
     }
   }
@@ -100,7 +100,7 @@ export function useTasksKanban(options?: { projectId?: MaybeRefOrGetter<string |
       tasks.value = await tasksApi.list(id);
       syncColumnsFromTasks();
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Не вдалося завантажити задачі';
+      error.value = e instanceof Error ? e.message : 'Could not load tasks';
       tasks.value = [];
       syncColumnsFromTasks();
     } finally {
@@ -109,13 +109,13 @@ export function useTasksKanban(options?: { projectId?: MaybeRefOrGetter<string |
   }
 
   function confirmRemove(t: Task) {
-    if (!window.confirm(`Видалити задачу «${t.title}»?`)) return;
+    if (!window.confirm(`Delete task “${t.title}”?`)) return;
     void (async () => {
       try {
         await tasksApi.remove(t.id);
         await loadTasks();
       } catch (e: unknown) {
-        error.value = e instanceof Error ? e.message : 'Не вдалося видалити';
+        error.value = e instanceof Error ? e.message : 'Could not delete';
       }
     })();
   }

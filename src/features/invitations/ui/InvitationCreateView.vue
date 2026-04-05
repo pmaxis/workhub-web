@@ -6,14 +6,14 @@
         class="inline-flex items-center gap-1 text-sm text-zinc-600 hover:text-zinc-900"
       >
         <Icon name="chevron-left" />
-        Назад
+        Back
       </router-link>
     </div>
 
     <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-6">
       <div>
-        <h2 class="text-base font-medium text-zinc-900">Нове запрошення</h2>
-        <p class="mt-1 text-sm text-zinc-600">Запросити клієнта на реєстрацію в системі.</p>
+        <h2 class="text-base font-medium text-zinc-900">New invitation</h2>
+        <p class="mt-1 text-sm text-zinc-600">Invite a client to register in the app.</p>
       </div>
 
       <Form class="mt-5" @submit.prevent="createInvitation">
@@ -29,10 +29,10 @@
         <p v-if="createError" class="text-sm text-red-600">{{ createError }}</p>
         <div class="flex justify-end gap-2">
           <Button type="button" variant="ghost" :disabled="creating" @click="cancel">
-            Скасувати
+            Cancel
           </Button>
           <Button type="submit" variant="primary" :disabled="creating">
-            {{ creating ? 'Створення…' : 'Запросити' }}
+            {{ creating ? 'Sending…' : 'Send invite' }}
           </Button>
         </div>
       </Form>

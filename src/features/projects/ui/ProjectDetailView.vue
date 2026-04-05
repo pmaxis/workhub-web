@@ -6,7 +6,7 @@
         class="inline-flex items-center gap-1 text-sm text-zinc-600 hover:text-zinc-900"
       >
         <Icon name="chevron-left" />
-        До списку
+        Back to list
       </router-link>
     </div>
 
@@ -14,7 +14,7 @@
       v-if="loading"
       class="flex flex-1 items-center justify-center py-12 text-sm text-zinc-500"
     >
-      Завантаження...
+      Loading...
     </div>
     <div
       v-else-if="error"
@@ -34,14 +34,14 @@
             role="menuitem"
             class="block px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
           >
-            Редагувати проєкт
+            Edit project
           </router-link>
           <router-link
             :to="{ name: 'taskCreate', query: { projectId: project.id } }"
             role="menuitem"
             class="block px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
           >
-            Нова задача
+            New task
           </router-link>
         </Dropdown>
       </div>

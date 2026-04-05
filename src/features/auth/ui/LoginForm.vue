@@ -12,7 +12,7 @@
     />
     <FormField
       v-model="password"
-      label="Пароль"
+      label="Password"
       id="password"
       label-class="text-zinc-600"
       type="password"
@@ -23,7 +23,7 @@
     <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
     <div class="w-full">
       <Button type="submit" variant="primary" size="md" :disabled="loading" class="w-full">
-        {{ loading ? 'Вхід...' : 'Увійти' }}
+        {{ loading ? 'Signing in...' : 'Sign in' }}
       </Button>
     </div>
   </Form>
@@ -50,7 +50,7 @@ async function handleSubmit() {
     await auth.login({ email: email.value, password: password.value });
     await router.replace({ name: 'home' });
   } catch (e) {
-    error.value = e instanceof Error ? e.message : 'Помилка входу';
+    error.value = e instanceof Error ? e.message : 'Sign-in failed';
   } finally {
     loading.value = false;
   }

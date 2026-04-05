@@ -6,27 +6,27 @@
         class="inline-flex items-center gap-1 text-sm text-zinc-600 hover:text-zinc-900"
       >
         <Icon name="chevron-left" />
-        Назад
+        Back
       </router-link>
     </div>
 
     <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-6">
       <h2 class="text-base font-medium text-zinc-900">
-        {{ isEdit ? 'Редагування проєкту' : 'Новий проєкт' }}
+        {{ isEdit ? 'Edit project' : 'New project' }}
       </h2>
-      <p class="mt-1 text-sm text-zinc-600">Назва та опис для вашого проєкту.</p>
+      <p class="mt-1 text-sm text-zinc-600">Name and description for your project.</p>
 
       <Form class="mt-5" @submit.prevent="submit">
         <p v-if="loadError" class="text-sm text-red-600">{{ loadError }}</p>
-        <FormField v-model="name" label="Назва" id="name" type="text" required />
-        <FormField v-model="description" label="Опис" as="textarea" id="description" rows="4" />
+        <FormField v-model="name" label="Name" id="name" type="text" required />
+        <FormField v-model="description" label="Description" as="textarea" id="description" rows="4" />
         <p v-if="formError" class="text-sm text-red-600">{{ formError }}</p>
         <div class="flex justify-end gap-2">
           <Button type="button" variant="ghost" :disabled="saving" @click="cancel">
-            Скасувати
+            Cancel
           </Button>
           <Button type="submit" variant="primary" :disabled="saving || !!loadError">
-            {{ saving ? 'Збереження…' : 'Зберегти' }}
+            {{ saving ? 'Saving…' : 'Save' }}
           </Button>
         </div>
       </Form>

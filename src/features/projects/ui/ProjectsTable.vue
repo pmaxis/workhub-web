@@ -3,14 +3,14 @@
     :loading="loading"
     :error="error"
     :empty="projects.length === 0"
-    empty-message="Ще немає проєктів. Створіть перший."
+    empty-message="No projects yet. Create your first one."
   >
     <Table>
       <TableHead>
         <tr>
-          <TableHeadCell>Назва</TableHeadCell>
-          <TableHeadCell>Задачі</TableHeadCell>
-          <TableHeadCell align="right">Дії</TableHeadCell>
+          <TableHeadCell>Name</TableHeadCell>
+          <TableHeadCell>Tasks</TableHeadCell>
+          <TableHeadCell align="right">Actions</TableHeadCell>
         </tr>
       </TableHead>
       <TableBody>
@@ -36,7 +36,7 @@
                 role="menuitem"
                 class="block px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
               >
-                Редагувати
+                Edit
               </router-link>
               <button
                 type="button"
@@ -44,7 +44,7 @@
                 class="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
                 @click="emit('remove', p)"
               >
-                Видалити
+                Delete
               </button>
             </Dropdown>
           </TableCell>

@@ -5,7 +5,7 @@ function formatDate(value?: string): string {
   if (!value) return '—';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '—';
-  return new Intl.DateTimeFormat('uk-UA', {
+  return new Intl.DateTimeFormat('en-US', {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(date);
@@ -22,7 +22,7 @@ export function useClientsList() {
     try {
       clients.value = await invitationsApi.listClients();
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Не вдалося завантажити клієнтів';
+      error.value = e instanceof Error ? e.message : 'Could not load clients';
       clients.value = [];
     } finally {
       loading.value = false;
