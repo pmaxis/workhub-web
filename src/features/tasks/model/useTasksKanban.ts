@@ -3,6 +3,9 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref, toValue, watch } f
 import type { SortableEvent } from 'sortablejs';
 import { projectsApi, type Project } from '@/features/projects';
 import { tasksApi, type Task, type TaskStatus } from '@/features/tasks/api/tasks.api';
+import { useToast } from '@/shared/ui/Toast';
+
+const UNDO_MS = 5000;
 
 export const KANBAN_COLUMNS: { status: TaskStatus; title: string }[] = [
   { status: 'PENDING', title: 'To do' },
@@ -14,11 +17,13 @@ export const KANBAN_GROUP = { name: 'kanban', pull: true, put: true };
 
 export function useTasksKanban(options?: { projectId?: MaybeRefOrGetter<string | undefined> }) {
   const scopedProjectId = options?.projectId;
+  const { successWithUndo, error: notifyError } = useToast();
 
   const projects = ref<Project[]>([]);
   const tasks = ref<Task[]>([]);
   const loading = ref(false);
   const error = ref('');
+  const deleteTarget = ref<Task | null>(null);
 
   const columnLists = reactive<Record<TaskStatus, Task[]>>({
     PENDING: [],
@@ -69,7 +74,9 @@ export function useTasksKanban(options?: { projectId?: MaybeRefOrGetter<string |
         tasks.value[idx] = updated;
       }
     } catch (err: unknown) {
-      error.value = err instanceof Error ? err.message : 'Could not update status';
+      const msg = err instanceof Error ? err.message : 'Could not update status';
+      error.value = msg;
+      notifyError(msg);
       syncColumnsFromTasks();
     }
   }
@@ -100,7 +107,9 @@ export function useTasksKanban(options?: { projectId?: MaybeRefOrGetter<string |
       tasks.value = await tasksApi.list(id);
       syncColumnsFromTasks();
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Could not load tasks';
+      const msg = e instanceof Error ? e.message : 'Could not load tasks';
+      error.value = msg;
+      notifyError(msg);
       tasks.value = [];
       syncColumnsFromTasks();
     } finally {
@@ -108,16 +117,37 @@ export function useTasksKanban(options?: { projectId?: MaybeRefOrGetter<string |
     }
   }
 
-  function confirmRemove(t: Task) {
-    if (!window.confirm(`Delete task “${t.title}”?`)) return;
-    void (async () => {
-      try {
-        await tasksApi.remove(t.id);
-        await loadTasks();
-      } catch (e: unknown) {
-        error.value = e instanceof Error ? e.message : 'Could not delete';
-      }
-    })();
+  function promptDelete(t: Task) {
+    deleteTarget.value = t;
+  }
+
+  function confirmDelete() {
+    const t = deleteTarget.value;
+    if (!t) return;
+    const index = tasks.value.findIndex((x) => x.id === t.id);
+    deleteTarget.value = null;
+    if (index === -1) return;
+    const removed = tasks.value[index];
+    tasks.value.splice(index, 1);
+    syncColumnsFromTasks();
+
+    const timeoutId = setTimeout(() => {
+      void (async () => {
+        try {
+          await tasksApi.remove(removed.id);
+        } catch (e: unknown) {
+          notifyError(e instanceof Error ? e.message : 'Could not delete');
+          tasks.value.splice(index, 0, removed);
+          syncColumnsFromTasks();
+        }
+      })();
+    }, UNDO_MS);
+
+    successWithUndo(`Task “${removed.title}” deleted`, () => {
+      clearTimeout(timeoutId);
+      tasks.value.splice(index, 0, removed);
+      syncColumnsFromTasks();
+    });
   }
 
   onMounted(() => {
@@ -149,6 +179,8 @@ export function useTasksKanban(options?: { projectId?: MaybeRefOrGetter<string |
     projectNameById,
     onKanbanDragStart,
     onKanbanEnd,
-    confirmRemove,
+    deleteTarget,
+    promptDelete,
+    confirmDelete,
   };
 }

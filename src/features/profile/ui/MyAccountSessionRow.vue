@@ -11,11 +11,10 @@
         <button
           type="button"
           role="menuitem"
-          class="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
-          :disabled="deleting"
+          class="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
           @click="emit('remove')"
         >
-          {{ deleting ? 'Removing…' : 'Remove session' }}
+          Remove session
         </button>
       </Dropdown>
     </div>
@@ -29,7 +28,6 @@ import { Dropdown } from '@/shared/ui';
 defineProps<{
   session: AccountSessionItem;
   expiresLabel: string;
-  deleting: boolean;
 }>();
 
 const emit = defineEmits<{

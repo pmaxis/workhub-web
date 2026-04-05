@@ -56,7 +56,7 @@
                   type="button"
                   role="menuitem"
                   class="block w-full px-3 py-2 text-left text-sm text-zinc-700 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
-                  :disabled="resendingId === inv.id || deletingId === inv.id"
+                  :disabled="resendingId === inv.id"
                   @click="resendInvitation(inv.id)"
                 >
                   {{ resendingId === inv.id ? 'Sending…' : 'Resend' }}
@@ -65,10 +65,10 @@
                   type="button"
                   role="menuitem"
                   class="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
-                  :disabled="deletingId === inv.id || resendingId === inv.id"
-                  @click="deleteInvitation(inv.id)"
+                  :disabled="resendingId === inv.id"
+                  @click="promptDelete(inv)"
                 >
-                  {{ deletingId === inv.id ? 'Deleting…' : 'Delete' }}
+                  Delete
                 </button>
               </Dropdown>
             </TableCell>
@@ -76,11 +76,18 @@
         </TableBody>
       </Table>
     </TableCard>
+
+    <ConfirmDeleteModal v-model="deleteTarget" @confirm="confirmDelete">
+      <template #message>
+        invitation for {{ deleteTarget?.email }}
+      </template>
+    </ConfirmDeleteModal>
   </div>
 </template>
 
 <script setup lang="ts">
 import {
+  ConfirmDeleteModal,
   Dropdown,
   Icon,
   Table,
@@ -98,11 +105,12 @@ const {
   loading,
   error,
   resendingId,
-  deletingId,
+  deleteTarget,
   formatDate,
   buildInviteLink,
   resendInvitation,
-  deleteInvitation,
+  promptDelete,
+  confirmDelete,
   copyInviteLink,
 } = useInvitationsList();
 </script>

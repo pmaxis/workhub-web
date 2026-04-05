@@ -1,10 +1,12 @@
 import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { projectsApi } from '@/features/projects/api/projects.api';
+import { useToast } from '@/shared/ui/Toast';
 
 export function useProjectForm() {
   const route = useRoute();
   const router = useRouter();
+  const { success: notifySuccess, error: notifyError } = useToast();
 
   const isEdit = computed(() => route.name === 'projectEdit');
   const projectId = computed(() => (isEdit.value ? String(route.params.id || '') : ''));
@@ -35,7 +37,9 @@ export function useProjectForm() {
       name.value = p.name;
       description.value = p.description ?? '';
     } catch (e: unknown) {
-      loadError.value = e instanceof Error ? e.message : 'Could not load project';
+      const msg = e instanceof Error ? e.message : 'Could not load project';
+      loadError.value = msg;
+      notifyError(msg);
     }
   }
 
@@ -60,13 +64,17 @@ export function useProjectForm() {
           name: payload.name,
           description: payload.description ?? null,
         });
+        notifySuccess('Project saved');
         await router.push({ name: 'projectDetail', params: { id: projectId.value } });
       } else {
         const created = await projectsApi.create(payload);
+        notifySuccess('Project created');
         await router.push({ name: 'projectDetail', params: { id: created.id } });
       }
     } catch (e: unknown) {
-      formError.value = e instanceof Error ? e.message : 'Could not save';
+      const msg = e instanceof Error ? e.message : 'Could not save';
+      formError.value = msg;
+      notifyError(msg);
     } finally {
       saving.value = false;
     }

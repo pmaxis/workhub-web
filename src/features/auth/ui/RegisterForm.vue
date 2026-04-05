@@ -55,7 +55,6 @@
       type="text"
       autocomplete="additional-name"
     />
-    <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
     <div class="w-full">
       <Button type="submit" variant="primary" size="md" :disabled="loading" class="w-full">
         {{ loading ? 'Creating account...' : 'Create account' }}
@@ -69,10 +68,12 @@ import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Button, Form, FormField } from '@/shared/ui';
 import { useAuth } from '@/features/auth/model/useAuth';
+import { useToast } from '@/shared/ui/Toast';
 
 const route = useRoute();
 const router = useRouter();
 const auth = useAuth();
+const { success: notifySuccess, error: notifyError, warning: notifyWarning } = useToast();
 
 const email = ref('');
 const password = ref('');
@@ -80,7 +81,6 @@ const lastName = ref('');
 const firstName = ref('');
 const thirdName = ref('');
 const loading = ref(false);
-const error = ref('');
 
 const invitationToken = ref<string | null>(null);
 const invitationEmail = ref<string | null>(null);
@@ -96,8 +96,9 @@ watch(
           m.invitationsApi.getByToken(token),
         );
         if (inv?.email) invitationEmail.value = inv.email;
+        else notifyWarning('Invitation link is invalid or expired');
       } catch {
-        void 0;
+        notifyWarning('Could not load invitation');
       }
     }
   },
@@ -109,7 +110,6 @@ watch(invitationEmail, (em) => {
 }, { immediate: true });
 
 async function handleSubmit() {
-  error.value = '';
   loading.value = true;
   try {
     await auth.register({
@@ -120,9 +120,10 @@ async function handleSubmit() {
       thirdName: thirdName.value || undefined,
       invitationToken: invitationToken.value ?? undefined,
     });
+    notifySuccess('Account created');
     await router.replace({ name: 'home' });
   } catch (e) {
-    error.value = e instanceof Error ? e.message : 'Registration failed';
+    notifyError(e instanceof Error ? e.message : 'Registration failed');
   } finally {
     loading.value = false;
   }

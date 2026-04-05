@@ -24,8 +24,14 @@
       :projects="projects"
       :loading="loading"
       :error="error"
-      @remove="confirmRemove"
+      @remove="promptDelete"
     />
+
+    <ConfirmDeleteModal v-model="deleteTarget" @confirm="confirmDelete">
+      <template #message>
+        project “{{ deleteTarget?.name }}” and all its tasks
+      </template>
+    </ConfirmDeleteModal>
 
     <div
       v-if="totalPages > 1"
@@ -69,9 +75,21 @@
 import { computed } from 'vue';
 import { useProjectsList } from '@/features/projects/model/useProjectsList';
 import ProjectsTable from '@/features/projects/ui/ProjectsTable.vue';
+import { ConfirmDeleteModal } from '@/shared/ui';
 
-const { projects, loading, error, search, page, total, totalPages, setPage, confirmRemove } =
-  useProjectsList();
+const {
+  projects,
+  loading,
+  error,
+  search,
+  page,
+  total,
+  totalPages,
+  setPage,
+  deleteTarget,
+  promptDelete,
+  confirmDelete,
+} = useProjectsList();
 
 const visiblePages = computed(() => {
   const delta = 2;

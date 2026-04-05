@@ -1,6 +1,9 @@
 import { onMounted, ref } from 'vue';
 import { invitationsApi, type Invitation } from '@/features/invitations/api/invitations.api';
 import { buildInviteLink } from '@/features/invitations/model/buildInviteLink';
+import { useToast } from '@/shared/ui/Toast';
+
+const UNDO_MS = 5000;
 
 function formatDate(value?: string): string {
   if (!value) return '—';
@@ -13,11 +16,13 @@ function formatDate(value?: string): string {
 }
 
 export function useInvitationsList() {
+  const { successWithUndo, error: notifyError, success: notifySuccess, info: notifyInfo } =
+    useToast();
   const invitations = ref<Invitation[]>([]);
   const loading = ref(false);
   const error = ref('');
   const resendingId = ref<string | null>(null);
-  const deletingId = ref<string | null>(null);
+  const deleteTarget = ref<Invitation | null>(null);
 
   async function loadInvitations() {
     loading.value = true;
@@ -25,7 +30,9 @@ export function useInvitationsList() {
     try {
       invitations.value = await invitationsApi.list({ status: 'PENDING' });
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Could not load invitations';
+      const msg = e instanceof Error ? e.message : 'Could not load invitations';
+      error.value = msg;
+      notifyError(msg);
       invitations.value = [];
     } finally {
       loading.value = false;
@@ -37,27 +44,49 @@ export function useInvitationsList() {
     try {
       await invitationsApi.resend(id);
       await loadInvitations();
+      notifySuccess('Invitation email sent');
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Could not resend';
+      const msg = e instanceof Error ? e.message : 'Could not resend';
+      error.value = msg;
+      notifyError(msg);
     } finally {
       resendingId.value = null;
     }
   }
 
-  async function deleteInvitation(id: string) {
-    deletingId.value = id;
-    try {
-      await invitationsApi.remove(id);
-      invitations.value = invitations.value.filter((i) => i.id !== id);
-    } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Could not delete';
-    } finally {
-      deletingId.value = null;
-    }
+  function promptDelete(inv: Invitation) {
+    deleteTarget.value = inv;
+  }
+
+  function confirmDelete() {
+    const inv = deleteTarget.value;
+    if (!inv) return;
+    const index = invitations.value.findIndex((i) => i.id === inv.id);
+    deleteTarget.value = null;
+    if (index === -1) return;
+    const removed = invitations.value[index];
+    invitations.value.splice(index, 1);
+
+    const timeoutId = setTimeout(() => {
+      void (async () => {
+        try {
+          await invitationsApi.remove(removed.id);
+        } catch (e: unknown) {
+          notifyError(e instanceof Error ? e.message : 'Could not delete');
+          invitations.value.splice(index, 0, removed);
+        }
+      })();
+    }, UNDO_MS);
+
+    successWithUndo(`Invitation for ${removed.email} deleted`, () => {
+      clearTimeout(timeoutId);
+      invitations.value.splice(index, 0, removed);
+    });
   }
 
   function copyInviteLink(token: string) {
     void navigator.clipboard.writeText(buildInviteLink(token));
+    notifyInfo('Link copied to clipboard', 3000);
   }
 
   onMounted(() => {
@@ -69,11 +98,12 @@ export function useInvitationsList() {
     loading,
     error,
     resendingId,
-    deletingId,
+    deleteTarget,
     formatDate,
     buildInviteLink,
     resendInvitation,
-    deleteInvitation,
+    promptDelete,
+    confirmDelete,
     copyInviteLink,
   };
 }

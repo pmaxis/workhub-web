@@ -1,9 +1,11 @@
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { projectsApi, type Project } from '@/features/projects/api/projects.api';
+import { useToast } from '@/shared/ui/Toast';
 
 export function useProjectDetail() {
   const route = useRoute();
+  const { error: notifyError } = useToast();
   const project = ref<Project | null>(null);
   const loading = ref(true);
   const error = ref('');
@@ -16,7 +18,9 @@ export function useProjectDetail() {
     try {
       project.value = await projectsApi.get(id);
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Could not load';
+      const msg = e instanceof Error ? e.message : 'Could not load';
+      error.value = msg;
+      notifyError(msg);
       project.value = null;
     } finally {
       loading.value = false;

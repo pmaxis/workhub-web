@@ -34,7 +34,7 @@
           type="button"
           class="cursor-pointer rounded-lg bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-black focus:outline-none disabled:opacity-50"
           :disabled="loading"
-          @click="loadSessions"
+          @click="loadSessions({ notifyOnSuccess: true })"
         >
           {{ loading ? 'Refreshing...' : 'Refresh' }}
         </button>
@@ -57,28 +57,34 @@
           :key="session.id"
           :session="session"
           :expires-label="formatDate(session.expiresAt)"
-          :deleting="deletingSessionId === session.id"
-          @remove="deleteSession(session.id)"
+          @remove="promptDeleteSession(session)"
         />
       </div>
     </div>
+
+    <ConfirmDeleteModal v-model="deleteTarget" @confirm="confirmDeleteSession">
+      <template #message>
+        this session ({{ deleteTarget?.ipAddress || 'unknown IP' }})
+      </template>
+    </ConfirmDeleteModal>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useMyAccount } from '@/features/profile/model/useMyAccount';
 import MyAccountSessionRow from '@/features/profile/ui/MyAccountSessionRow.vue';
-import { Icon } from '@/shared/ui';
+import { ConfirmDeleteModal, Icon } from '@/shared/ui';
 
 const {
   auth,
   loading,
   error,
   sessions,
-  deletingSessionId,
+  deleteTarget,
   fullName,
   formatDate,
   loadSessions,
-  deleteSession,
+  promptDeleteSession,
+  confirmDeleteSession,
 } = useMyAccount();
 </script>

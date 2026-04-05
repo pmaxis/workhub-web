@@ -2,9 +2,13 @@ import { computed, onMounted, ref } from 'vue';
 import { companiesApi } from '@/features/company/api/companies.api';
 import type { Company } from '@/features/company/api/companies.api';
 import { useAuth } from '@/features/auth';
+import { useToast } from '@/shared/ui/Toast';
+
+const UNDO_MS = 5000;
 
 export function useCompanySettings() {
   const auth = useAuth();
+  const { successWithUndo, success, error: notifyError } = useToast();
   const companies = ref<Company[]>([]);
   const loading = ref(true);
   const name = ref('');
@@ -15,6 +19,7 @@ export function useCompanySettings() {
   const updating = ref(false);
   const updateError = ref('');
   const deleteError = ref('');
+  const deleteTarget = ref<Company | null>(null);
 
   const hasCompany = computed(() => companies.value.length > 0);
 
@@ -38,8 +43,11 @@ export function useCompanySettings() {
       name.value = '';
       await auth.fetchMe();
       await load();
+      success('Company created');
     } catch (e: unknown) {
-      createError.value = e instanceof Error ? e.message : 'Could not create company';
+      const msg = e instanceof Error ? e.message : 'Could not create company';
+      createError.value = msg;
+      notifyError(msg);
     } finally {
       creating.value = false;
     }
@@ -69,32 +77,50 @@ export function useCompanySettings() {
       cancelEdit();
       await auth.fetchMe();
       await load();
+      success('Company updated');
     } catch (e: unknown) {
-      updateError.value = e instanceof Error ? e.message : 'Could not update company';
+      const msg = e instanceof Error ? e.message : 'Could not update company';
+      updateError.value = msg;
+      notifyError(msg);
     } finally {
       updating.value = false;
     }
   }
 
-  function confirmRemoveCompany(c: Company) {
-    if (
-      !window.confirm(
-        `Delete company “${c.name}”? Members will be unlinked; projects will no longer be tied to this company.`,
-      )
-    ) {
-      return;
-    }
-    void (async () => {
-      deleteError.value = '';
-      try {
-        await companiesApi.remove(c.id);
-        if (editingId.value === c.id) cancelEdit();
-        await auth.fetchMe();
-        await load();
-      } catch (e: unknown) {
-        deleteError.value = e instanceof Error ? e.message : 'Could not delete company';
-      }
-    })();
+  function promptDeleteCompany(c: Company) {
+    deleteTarget.value = c;
+  }
+
+  function confirmDeleteCompany() {
+    const c = deleteTarget.value;
+    if (!c) return;
+    const index = companies.value.findIndex((x) => x.id === c.id);
+    deleteTarget.value = null;
+    if (index === -1) return;
+    const removed = companies.value[index];
+    companies.value.splice(index, 1);
+    deleteError.value = '';
+    if (editingId.value === removed.id) cancelEdit();
+
+    const timeoutId = setTimeout(() => {
+      void (async () => {
+        try {
+          await companiesApi.remove(removed.id);
+          await auth.fetchMe();
+          await load();
+        } catch (e: unknown) {
+          const msg = e instanceof Error ? e.message : 'Could not delete company';
+          deleteError.value = msg;
+          notifyError(msg);
+          companies.value.splice(index, 0, removed);
+        }
+      })();
+    }, UNDO_MS);
+
+    successWithUndo(`Company “${removed.name}” deleted`, () => {
+      clearTimeout(timeoutId);
+      companies.value.splice(index, 0, removed);
+    });
   }
 
   onMounted(() => {
@@ -114,9 +140,11 @@ export function useCompanySettings() {
     updating,
     updateError,
     deleteError,
+    deleteTarget,
     startEdit,
     cancelEdit,
     saveEdit,
-    confirmRemoveCompany,
+    promptDeleteCompany,
+    confirmDeleteCompany,
   };
 }

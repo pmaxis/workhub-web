@@ -2,10 +2,12 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuth } from '@/features/auth';
 import { profileApi } from '@/features/profile/api/profile.api';
+import { useToast } from '@/shared/ui/Toast';
 
 export function useMyAccountEdit() {
   const router = useRouter();
   const auth = useAuth();
+  const { success: notifySuccess, error: notifyError } = useToast();
 
   const profileSaving = ref(false);
   const profileError = ref('');
@@ -42,9 +44,12 @@ export function useMyAccountEdit() {
       if (form.value.password.trim()) payload.password = form.value.password;
       await profileApi.updateProfile(payload);
       await auth.fetchMe();
+      notifySuccess('Profile saved');
       await router.push({ name: 'myAccount' });
     } catch (e: unknown) {
-      profileError.value = e instanceof Error ? e.message : 'Could not save';
+      const msg = e instanceof Error ? e.message : 'Could not save';
+      profileError.value = msg;
+      notifyError(msg);
     } finally {
       profileSaving.value = false;
     }

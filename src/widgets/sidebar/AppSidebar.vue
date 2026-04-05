@@ -29,6 +29,7 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuth } from '@/features/auth';
+import { useToast } from '@/shared/ui/Toast';
 import SidebarHeader from '@/widgets/sidebar/ui/SidebarHeader.vue';
 import SidebarMain from '@/widgets/sidebar/ui/SidebarMain.vue';
 import SidebarFooter from '@/widgets/sidebar/ui/SidebarFooter.vue';
@@ -37,6 +38,7 @@ import SidebarUserMenu from '@/widgets/sidebar/ui/SidebarUserMenu.vue';
 const route = useRoute();
 const router = useRouter();
 const auth = useAuth();
+const { success: notifySuccess } = useToast();
 
 const footerRef = ref<InstanceType<typeof SidebarFooter> | null>(null);
 const userMenuRef = ref<InstanceType<typeof SidebarUserMenu> | null>(null);
@@ -68,6 +70,7 @@ function handleClickOutside(e: MouseEvent) {
 async function handleLogout() {
   isUserMenuOpen.value = false;
   await auth.logout();
+  notifySuccess('Signed out');
   router.replace({ name: 'login' });
 }
 

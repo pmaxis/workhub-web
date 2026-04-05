@@ -20,7 +20,6 @@
       autocomplete="current-password"
       placeholder="••••••••"
     />
-    <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
     <div class="w-full">
       <Button type="submit" variant="primary" size="md" :disabled="loading" class="w-full">
         {{ loading ? 'Signing in...' : 'Sign in' }}
@@ -34,23 +33,24 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button, Form, FormField } from '@/shared/ui';
 import { useAuth } from '@/features/auth/model/useAuth';
+import { useToast } from '@/shared/ui/Toast';
 
 const router = useRouter();
 const auth = useAuth();
+const { success: notifySuccess, error: notifyError } = useToast();
 
 const email = ref('');
 const password = ref('');
 const loading = ref(false);
-const error = ref('');
 
 async function handleSubmit() {
-  error.value = '';
   loading.value = true;
   try {
     await auth.login({ email: email.value, password: password.value });
+    notifySuccess('Signed in');
     await router.replace({ name: 'home' });
   } catch (e) {
-    error.value = e instanceof Error ? e.message : 'Sign-in failed';
+    notifyError(e instanceof Error ? e.message : 'Sign-in failed');
   } finally {
     loading.value = false;
   }

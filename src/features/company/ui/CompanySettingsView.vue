@@ -63,7 +63,7 @@
                   type="button"
                   role="menuitem"
                   class="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
-                  @click="confirmRemoveCompany(c)"
+                  @click="promptDeleteCompany(c)"
                 >
                   Delete
                 </button>
@@ -97,11 +97,17 @@
         </Form>
       </div>
     </template>
+
+    <ConfirmDeleteModal v-model="deleteTarget" @confirm="confirmDeleteCompany">
+      <template #message>
+        company “{{ deleteTarget?.name }}” (members will be unlinked; projects will no longer be tied to it)
+      </template>
+    </ConfirmDeleteModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Button, Dropdown, Form, FormField } from '@/shared/ui';
+import { Button, ConfirmDeleteModal, Dropdown, Form, FormField } from '@/shared/ui';
 import { useCompanySettings } from '@/features/company/model/useCompanySettings';
 
 const {
@@ -117,9 +123,11 @@ const {
   updating,
   updateError,
   deleteError,
+  deleteTarget,
   startEdit,
   cancelEdit,
   saveEdit,
-  confirmRemoveCompany,
+  promptDeleteCompany,
+  confirmDeleteCompany,
 } = useCompanySettings();
 </script>

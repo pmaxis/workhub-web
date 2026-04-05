@@ -2,10 +2,12 @@ import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { projectsApi, type Project } from '@/features/projects';
 import { tasksApi, type TaskStatus } from '@/features/tasks/api/tasks.api';
+import { useToast } from '@/shared/ui/Toast';
 
 export function useTaskForm() {
   const route = useRoute();
   const router = useRouter();
+  const { success: notifySuccess, error: notifyError, warning: notifyWarning } = useToast();
 
   const isEdit = computed(() => route.name === 'taskEdit');
   const taskId = computed(() => (isEdit.value ? String(route.params.id || '') : ''));
@@ -34,7 +36,9 @@ export function useTaskForm() {
       projects.value = result.data;
     } catch {
       projects.value = [];
-      loadError.value = 'Could not load projects';
+      const msg = 'Could not load projects';
+      loadError.value = msg;
+      notifyError(msg);
     }
   }
 
@@ -47,7 +51,9 @@ export function useTaskForm() {
       description.value = t.description ?? '';
       status.value = t.status;
     } catch (e: unknown) {
-      loadError.value = e instanceof Error ? e.message : 'Could not load task';
+      const msg = e instanceof Error ? e.message : 'Could not load task';
+      loadError.value = msg;
+      notifyError(msg);
     }
   }
 
@@ -84,10 +90,13 @@ export function useTaskForm() {
           description: description.value.trim() || null,
           status: status.value,
         });
+        notifySuccess('Task saved');
         await router.push(backTo.value);
       } else {
         if (!selectedProjectId.value) {
-          formError.value = 'Select a project';
+          const msg = 'Select a project';
+          formError.value = msg;
+          notifyWarning(msg);
           return;
         }
         await tasksApi.create({
@@ -96,10 +105,13 @@ export function useTaskForm() {
           status: status.value,
           projectId: selectedProjectId.value,
         });
+        notifySuccess('Task created');
         await router.push({ name: 'tasks' });
       }
     } catch (e: unknown) {
-      formError.value = e instanceof Error ? e.message : 'Could not save';
+      const msg = e instanceof Error ? e.message : 'Could not save';
+      formError.value = msg;
+      notifyError(msg);
     } finally {
       saving.value = false;
     }

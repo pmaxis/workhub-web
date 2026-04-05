@@ -32,9 +32,15 @@
         :project-name-by-id="projectNameById"
         :drag-start="onKanbanDragStart"
         :drag-end="onKanbanEnd"
-        @remove-task="confirmRemove"
+        @remove-task="promptDelete"
       />
     </div>
+
+    <ConfirmDeleteModal v-model="deleteTarget" @confirm="confirmDelete">
+      <template #message>
+        task “{{ deleteTarget?.title }}”
+      </template>
+    </ConfirmDeleteModal>
   </div>
 </template>
 
@@ -42,6 +48,7 @@
 import { computed } from 'vue';
 import { useTasksKanban } from '@/features/tasks/model/useTasksKanban';
 import TasksKanbanColumn from '@/features/tasks/ui/TasksKanbanColumn.vue';
+import { ConfirmDeleteModal } from '@/shared/ui';
 
 const props = defineProps<{
   projectId?: string;
@@ -65,7 +72,9 @@ const {
   projectNameById,
   onKanbanDragStart,
   onKanbanEnd,
-  confirmRemove,
+  deleteTarget,
+  promptDelete,
+  confirmDelete,
 } = useTasksKanban({ projectId: () => props.projectId });
 </script>
 

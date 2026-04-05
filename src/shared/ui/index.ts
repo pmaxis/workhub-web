@@ -17,3 +17,6 @@ export { default as Link } from '@/shared/ui/Link/Link.vue';
 export { default as Select } from '@/shared/ui/Select/Select.vue';
 export type { SelectOption } from '@/shared/ui/Select/Select.vue';
 export { default as Textarea } from '@/shared/ui/Textarea/Textarea.vue';
+export { default as ConfirmDeleteModal } from '@/shared/ui/ConfirmDeleteModal/ConfirmDeleteModal.vue';
+export { ToastContainer, useToast } from '@/shared/ui/Toast';
+export type { ToastItem, ToastOptions, ToastVariant } from '@/shared/ui/Toast';

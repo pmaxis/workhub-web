@@ -1,6 +1,9 @@
 import { computed, onMounted, ref } from 'vue';
 import { useAuth } from '@/features/auth';
 import { apiClient } from '@/shared/api/client';
+import { useToast } from '@/shared/ui/Toast';
+
+const UNDO_MS = 5000;
 
 export type AccountSessionItem = {
   id: string;
@@ -44,10 +47,11 @@ function normalizeSession(raw: RawSessionItem): AccountSessionItem {
 
 export function useMyAccount() {
   const auth = useAuth();
+  const { successWithUndo, error: notifyError, info: notifyInfo } = useToast();
   const loading = ref(false);
   const error = ref('');
   const sessions = ref<AccountSessionItem[]>([]);
-  const deletingSessionId = ref<string | null>(null);
+  const deleteTarget = ref<AccountSessionItem | null>(null);
 
   const fullName = computed(() => {
     const u = auth.user;
@@ -55,7 +59,7 @@ export function useMyAccount() {
     return [u.lastName, u.firstName, u.thirdName].filter(Boolean).join(' ');
   });
 
-  async function loadSessions() {
+  async function loadSessions(options?: { notifyOnSuccess?: boolean }) {
     if (!auth.user?.id) return;
     loading.value = true;
     error.value = '';
@@ -63,25 +67,47 @@ export function useMyAccount() {
       const allRaw = await apiClient.get<RawSessionItem[]>('/sessions');
       const normalized = allRaw.map(normalizeSession);
       sessions.value = normalized.filter((item) => item.userId === auth.user?.id);
+      if (options?.notifyOnSuccess) {
+        notifyInfo('Sessions refreshed', 3000);
+      }
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Could not load sessions';
+      const msg = e instanceof Error ? e.message : 'Could not load sessions';
+      error.value = msg;
+      notifyError(msg);
       sessions.value = [];
     } finally {
       loading.value = false;
     }
   }
 
-  async function deleteSession(sessionId: string) {
-    deletingSessionId.value = sessionId;
-    error.value = '';
-    try {
-      await apiClient.delete(`/sessions/${sessionId}`);
-      sessions.value = sessions.value.filter((session) => session.id !== sessionId);
-    } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'Could not remove session';
-    } finally {
-      deletingSessionId.value = null;
-    }
+  function promptDeleteSession(session: AccountSessionItem) {
+    deleteTarget.value = session;
+  }
+
+  function confirmDeleteSession() {
+    const session = deleteTarget.value;
+    if (!session) return;
+    const index = sessions.value.findIndex((s) => s.id === session.id);
+    deleteTarget.value = null;
+    if (index === -1) return;
+    const removed = sessions.value[index];
+    sessions.value.splice(index, 1);
+
+    const timeoutId = setTimeout(() => {
+      void (async () => {
+        try {
+          await apiClient.delete(`/sessions/${removed.id}`);
+        } catch (e: unknown) {
+          notifyError(e instanceof Error ? e.message : 'Could not remove session');
+          sessions.value.splice(index, 0, removed);
+        }
+      })();
+    }, UNDO_MS);
+
+    successWithUndo('Session removed', () => {
+      clearTimeout(timeoutId);
+      sessions.value.splice(index, 0, removed);
+    });
   }
 
   onMounted(() => {
@@ -93,10 +119,11 @@ export function useMyAccount() {
     loading,
     error,
     sessions,
-    deletingSessionId,
+    deleteTarget,
     fullName,
     formatDate,
     loadSessions,
-    deleteSession,
+    promptDeleteSession,
+    confirmDeleteSession,
   };
 }
