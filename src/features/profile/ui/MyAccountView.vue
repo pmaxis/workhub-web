@@ -4,7 +4,6 @@
       <div class="flex items-start justify-between gap-4">
         <div>
           <h2 class="text-base font-medium text-zinc-900">My account</h2>
-          <p class="mt-1 text-sm text-zinc-600">View and edit your profile.</p>
         </div>
         <router-link
           :to="{ name: 'myAccountEdit' }"

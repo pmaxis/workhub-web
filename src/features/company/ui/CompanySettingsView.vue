@@ -2,7 +2,6 @@
   <div class="space-y-6">
     <div>
       <h1 class="text-2xl font-semibold text-zinc-900">Company settings</h1>
-      <p class="mt-1 text-zinc-600">Create a company to manage team members and invitations.</p>
     </div>
 
     <div v-if="loading" class="text-sm text-zinc-500">Loading…</div>
@@ -75,9 +74,6 @@
 
       <div v-else class="rounded-xl border border-zinc-200 bg-zinc-50 p-6">
         <h2 class="text-base font-medium text-zinc-900">Create company</h2>
-        <p class="mt-1 text-sm text-zinc-600">
-          After you create one, a “Team” section will appear in the left menu.
-        </p>
         <Form class="mt-5" @submit.prevent="createCompany">
           <FormField
             v-model="name"

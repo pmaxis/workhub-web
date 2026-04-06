@@ -42,7 +42,7 @@ const router = createRouter({
           path: 'company/settings',
           name: 'companySettings',
           component: () => import('@/pages/CompanySettingsPage.vue'),
-          meta: { pageTitle: 'Company settings', pageDescription: 'Your company details' },
+          meta: { pageTitle: 'Company settings' },
         },
         {
           path: 'notifications',
@@ -53,7 +53,7 @@ const router = createRouter({
           path: 'projects',
           name: 'projects',
           component: () => import('@/pages/ProjectsPage.vue'),
-          meta: { pageTitle: 'Projects', pageDescription: 'Project list' },
+          meta: { pageTitle: 'Projects' },
         },
         {
           path: 'projects/new',
@@ -77,7 +77,7 @@ const router = createRouter({
           path: 'tasks',
           name: 'tasks',
           component: () => import('@/pages/TasksPage.vue'),
-          meta: { pageTitle: 'Tasks', pageDescription: 'Task list' },
+          meta: { pageTitle: 'Tasks' },
         },
         {
           path: 'tasks/new',
@@ -95,19 +95,19 @@ const router = createRouter({
           path: 'time-tracker',
           name: 'timeTracker',
           component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: { pageTitle: 'Time tracker', pageDescription: 'Track your time' },
+          meta: { pageTitle: 'Time tracker' },
         },
         {
           path: 'clients',
           name: 'clients',
           component: () => import('@/pages/ClientsPage.vue'),
-          meta: { pageTitle: 'Clients', pageDescription: 'Client directory' },
+          meta: { pageTitle: 'Clients' },
         },
         {
           path: 'invitations',
           name: 'invitations',
           component: () => import('@/pages/InvitationsPage.vue'),
-          meta: { pageTitle: 'Invitations', pageDescription: 'Client invitations' },
+          meta: { pageTitle: 'Invitations' },
         },
         {
           path: 'invitations/new',
@@ -143,7 +143,7 @@ const router = createRouter({
           path: 'invoices',
           name: 'invoices',
           component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: { pageTitle: 'Invoices', pageDescription: 'Invoice list' },
+          meta: { pageTitle: 'Invoices' },
         },
         {
           path: 'invoices/new',
@@ -161,13 +161,13 @@ const router = createRouter({
           path: 'payments',
           name: 'payments',
           component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: { pageTitle: 'Payments', pageDescription: 'Payment history' },
+          meta: { pageTitle: 'Payments' },
         },
         {
           path: 'expenses',
           name: 'expenses',
           component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: { pageTitle: 'Expenses', pageDescription: 'Expense tracking' },
+          meta: { pageTitle: 'Expenses' },
         },
         {
           path: 'finance-analytics',
@@ -179,28 +179,25 @@ const router = createRouter({
           path: 'calendar',
           name: 'calendar',
           component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: { pageTitle: 'Calendar', pageDescription: 'Event planning' },
+          meta: { pageTitle: 'Calendar' },
         },
         {
           path: 'deadlines',
           name: 'deadlines',
           component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: { pageTitle: 'Deadlines', pageDescription: 'Upcoming deadlines' },
+          meta: { pageTitle: 'Deadlines' },
         },
         {
           path: 'reminders',
           name: 'reminders',
           component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: { pageTitle: 'Reminders', pageDescription: 'Reminder list' },
+          meta: { pageTitle: 'Reminders' },
         },
         {
           path: 'notes',
           name: 'notes',
           component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: {
-            pageTitle: 'Notes',
-            pageDescription: 'Ideas, thoughts, observations',
-          },
+          meta: { pageTitle: 'Notes' },
         },
         {
           path: 'notes/new',
@@ -218,10 +215,7 @@ const router = createRouter({
           path: 'knowledge',
           name: 'knowledgeBase',
           component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: {
-            pageTitle: 'Knowledge base',
-            pageDescription: 'Useful materials, articles, resources',
-          },
+          meta: { pageTitle: 'Knowledge base' },
         },
         {
           path: 'knowledge/new',
@@ -239,10 +233,7 @@ const router = createRouter({
           path: 'templates',
           name: 'templates',
           component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: {
-            pageTitle: 'Templates',
-            pageDescription: 'Reusable structures: brief, proposal, invoice',
-          },
+          meta: { pageTitle: 'Templates' },
         },
         {
           path: 'templates/new',
@@ -260,10 +251,7 @@ const router = createRouter({
           path: 'journal',
           name: 'journal',
           component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: {
-            pageTitle: 'Journal',
-            pageDescription: 'Daily and weekly reflections and summaries',
-          },
+          meta: { pageTitle: 'Journal' },
         },
       ],
     },

@@ -3,7 +3,6 @@
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div>
         <h1 class="text-2xl font-semibold text-zinc-900">Invitations</h1>
-        <p class="mt-1 text-zinc-600">Invitations to register in the app</p>
       </div>
       <router-link
         :to="{ name: 'invitationCreate' }"

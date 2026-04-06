@@ -14,7 +14,6 @@
       <h2 class="text-base font-medium text-zinc-900">
         {{ isEdit ? 'Edit project' : 'New project' }}
       </h2>
-      <p class="mt-1 text-sm text-zinc-600">Name and description for your project.</p>
 
       <Form class="mt-5" @submit.prevent="submit">
         <p v-if="loadError" class="text-sm text-red-600">{{ loadError }}</p>

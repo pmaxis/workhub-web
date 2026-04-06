@@ -11,10 +11,7 @@
     </div>
 
     <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-6">
-      <div>
-        <h2 class="text-base font-medium text-zinc-900">Edit account</h2>
-        <p class="mt-1 text-sm text-zinc-600">Update your name, email, and password.</p>
-      </div>
+      <h2 class="text-base font-medium text-zinc-900">Edit account</h2>
 
       <Form class="mt-5" @submit.prevent="submitProfile">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">

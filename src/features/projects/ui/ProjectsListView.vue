@@ -1,24 +1,59 @@
 <template>
-  <div class="space-y-6">
-    <div class="flex flex-wrap items-start justify-between gap-4">
-      <div>
-        <h1 class="text-2xl font-semibold text-zinc-900">Projects</h1>
-        <p class="mt-1 text-zinc-600">Your projects and task counts</p>
+  <div class="flex flex-col gap-4">
+    <div>
+      <div class="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-semibold text-zinc-900">Projects</h1>
+        </div>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            class="inline-flex h-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border px-2.5 text-sm font-medium transition-colors focus:outline-none focus-visible:border-zinc-900"
+            :class="
+              filtersOpen
+                ? 'border-zinc-900 bg-zinc-900 text-white'
+                : 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50'
+            "
+            :aria-expanded="filtersOpen"
+            aria-controls="projects-filters"
+            aria-label="Toggle filters"
+            @click="filtersOpen = !filtersOpen"
+          >
+            <Icon name="funnel" size="sm" />
+          </button>
+          <router-link
+            :to="{ name: 'projectCreate' }"
+            class="inline-flex h-9 items-center rounded-lg bg-zinc-900 px-4 text-sm font-medium text-white hover:bg-zinc-800"
+          >
+            New project
+          </router-link>
+        </div>
       </div>
-      <router-link
-        :to="{ name: 'projectCreate' }"
-        class="inline-flex items-center rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800"
-      >
-        New project
-      </router-link>
-    </div>
 
-    <input
-      v-model="search"
-      type="search"
-      placeholder="Search projects…"
-      class="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 outline-none focus:border-zinc-400 focus:ring-2 focus:ring-zinc-200 sm:max-w-xs"
-    />
+      <div
+        class="grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none"
+        :class="filtersOpen ? 'mt-3 grid-rows-[1fr]' : 'mt-0 grid-rows-[0fr]'"
+      >
+        <div class="min-h-0 overflow-hidden">
+          <div
+            id="projects-filters"
+            class="rounded-xl border border-zinc-200 bg-zinc-50 p-4"
+            :inert="!filtersOpen"
+          >
+            <div class="max-w-md space-y-1">
+              <FieldLabel forInput="projects-search">Search</FieldLabel>
+              <input
+                id="projects-search"
+                v-model="search"
+                type="search"
+                placeholder="Search projects…"
+                class="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-zinc-900"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <ProjectsTable
       :projects="projects"
@@ -72,10 +107,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useProjectsList } from '@/features/projects/model/useProjectsList';
 import ProjectsTable from '@/features/projects/ui/ProjectsTable.vue';
-import { ConfirmDeleteModal } from '@/shared/ui';
+import { ConfirmDeleteModal, FieldLabel, Icon } from '@/shared/ui';
+
+const filtersOpen = ref(false);
 
 const {
   projects,

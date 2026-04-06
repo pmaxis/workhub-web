@@ -3,7 +3,6 @@
     <div class="flex shrink-0 flex-wrap items-start justify-between gap-4">
       <div>
         <h1 class="text-2xl font-semibold text-zinc-900">Tasks</h1>
-        <p class="mt-1 text-zinc-600">All tasks across your projects</p>
       </div>
       <router-link
         :to="{ name: 'taskCreate' }"
