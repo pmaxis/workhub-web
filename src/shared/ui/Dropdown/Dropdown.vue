@@ -3,13 +3,13 @@
     <button
       ref="buttonRef"
       type="button"
-      class="rounded-md p-1 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-0"
+      :class="buttonClass"
       aria-haspopup="menu"
       :aria-expanded="open"
       :aria-label="ariaLabel"
       @click.stop="toggle"
     >
-      <Icon name="ellipsis-vertical" />
+      <Icon :name="icon" />
     </button>
   </div>
   <Teleport to="body">
@@ -27,17 +27,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
+import { computed, ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
 import Icon from '@/shared/ui/Icon/Icon.vue';
 
 const props = withDefaults(
   defineProps<{
     align?: 'end' | 'start';
     ariaLabel?: string;
+    noHighlight?: boolean;
+    icon?: import('@/shared/ui/Icon/Icon.vue').IconName;
   }>(),
   {
     align: 'end',
     ariaLabel: 'Actions',
+    noHighlight: false,
+    icon: 'ellipsis-vertical',
   },
 );
 
@@ -48,6 +52,23 @@ const rootRef = ref<HTMLElement | null>(null);
 const buttonRef = ref<HTMLElement | null>(null);
 const panelRef = ref<HTMLElement | null>(null);
 const panelStyle = ref<Record<string, string>>({});
+
+const buttonClass = computed(() => {
+  const base = ['rounded-md', 'p-1', 'text-zinc-500', 'transition-colors', 'cursor-pointer'];
+  if (props.noHighlight) {
+    base.push('focus:outline-none');
+    return base;
+  }
+  base.push(
+    'hover:bg-zinc-100',
+    'hover:text-zinc-900',
+    'focus:outline-none',
+    'focus:ring-2',
+    'focus:ring-zinc-300',
+    'focus:ring-offset-0',
+  );
+  return base;
+});
 
 function close() {
   open.value = false;

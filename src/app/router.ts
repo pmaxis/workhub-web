@@ -45,11 +45,6 @@ const router = createRouter({
           meta: { pageTitle: 'Company settings' },
         },
         {
-          path: 'notifications',
-          name: 'notifications',
-          component: () => import('@/pages/NotificationsPage.vue'),
-        },
-        {
           path: 'projects',
           name: 'projects',
           component: () => import('@/pages/ProjectsPage.vue'),

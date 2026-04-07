@@ -12,11 +12,17 @@
           :is-open="isUserMenuOpen"
           @logout="handleLogout"
         />
+        <NotificationsDropdown
+          v-if="isNotificationsOpen"
+          ref="notificationsRef"
+          :user-initials="userInitials"
+        />
         <SidebarFooter
           ref="footerRef"
           :user-initials="userInitials"
           :is-user-menu-open="isUserMenuOpen"
-          :has-notifications="hasNotifications"
+          :has-notifications="hasUnread"
+          :unread-count="unreadCount"
           @toggle-menu="isUserMenuOpen = !isUserMenuOpen"
           @notifications="handleNotifications"
         />
@@ -30,10 +36,12 @@ import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuth } from '@/features/auth';
 import { useToast } from '@/shared/ui/Toast';
+import { useNotificationsIndicator } from '@/features/notifications/model/notifications.state';
 import SidebarHeader from '@/widgets/sidebar/ui/SidebarHeader.vue';
 import SidebarMain from '@/widgets/sidebar/ui/SidebarMain.vue';
 import SidebarFooter from '@/widgets/sidebar/ui/SidebarFooter.vue';
 import SidebarUserMenu from '@/widgets/sidebar/ui/SidebarUserMenu.vue';
+import NotificationsDropdown from '@/widgets/notifications/ui/NotificationsDropdown.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -42,8 +50,10 @@ const { success: notifySuccess } = useToast();
 
 const footerRef = ref<InstanceType<typeof SidebarFooter> | null>(null);
 const userMenuRef = ref<InstanceType<typeof SidebarUserMenu> | null>(null);
+const notificationsRef = ref<InstanceType<typeof NotificationsDropdown> | null>(null);
 const isUserMenuOpen = ref(false);
-const hasNotifications = ref(true);
+const isNotificationsOpen = ref(false);
+const { hasUnread, unreadCount, refreshUnreadCount } = useNotificationsIndicator();
 
 const userPib = computed(() => {
   const u = auth.user;
@@ -63,23 +73,33 @@ const userInitials = computed(() => {
 function handleClickOutside(e: MouseEvent) {
   const target = e.target as Node;
   if (footerRef.value?.buttonRef?.contains(target)) return;
+  if (footerRef.value?.notificationsButtonRef?.contains(target)) return;
   if (userMenuRef.value?.panelRef?.contains(target)) return;
+  if (notificationsRef.value?.panelRef?.contains(target)) return;
   if (isUserMenuOpen.value) isUserMenuOpen.value = false;
+  if (isNotificationsOpen.value) isNotificationsOpen.value = false;
 }
 
 async function handleLogout() {
   isUserMenuOpen.value = false;
+  isNotificationsOpen.value = false;
   await auth.logout();
   notifySuccess('Signed out');
   router.replace({ name: 'login' });
 }
 
 function handleNotifications() {
-  router.push({ name: 'notifications' });
+  isNotificationsOpen.value = !isNotificationsOpen.value;
+  if (isNotificationsOpen.value) {
+    isUserMenuOpen.value = false;
+  }
 }
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside, true);
+  void refreshUnreadCount().catch(() => {
+    // ignore
+  });
 });
 
 onBeforeUnmount(() => {
