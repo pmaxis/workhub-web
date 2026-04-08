@@ -89,7 +89,7 @@ const router = createRouter({
         {
           path: 'time-tracker',
           name: 'timeTracker',
-          component: () => import('@/pages/PlaceholderPage.vue'),
+          component: () => import('@/pages/TimeTrackerPage.vue'),
           meta: { pageTitle: 'Time tracker' },
         },
         {
@@ -121,12 +121,6 @@ const router = createRouter({
           name: 'clientEdit',
           component: () => import('@/pages/PlaceholderPage.vue'),
           meta: { pageTitle: 'Edit client' },
-        },
-        {
-          path: 'client-projects',
-          name: 'clientProjects',
-          component: () => import('@/pages/PlaceholderPage.vue'),
-          meta: { pageTitle: 'Client projects' },
         },
         {
           path: 'client-notes',

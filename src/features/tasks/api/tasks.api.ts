@@ -9,6 +9,8 @@ export type Task = {
   status: TaskStatus;
   projectId: string;
   assigneeId: string;
+  /** Total seconds logged by the current user on this task (includes running timer). */
+  trackedDurationSeconds: number;
   createdAt: string;
   updatedAt: string;
 };

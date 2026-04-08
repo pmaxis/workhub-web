@@ -21,6 +21,7 @@ export function useTaskForm() {
   const saving = ref(false);
   const formError = ref('');
   const loadError = ref('');
+  const trackedSeconds = ref(0);
 
   const backTo = computed(() => {
     if (selectedProjectId.value) {
@@ -50,6 +51,7 @@ export function useTaskForm() {
       title.value = t.title;
       description.value = t.description ?? '';
       status.value = t.status;
+      trackedSeconds.value = t.trackedDurationSeconds ?? 0;
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'Could not load task';
       loadError.value = msg;
@@ -70,6 +72,7 @@ export function useTaskForm() {
       title.value = '';
       description.value = '';
       status.value = 'PENDING';
+      trackedSeconds.value = 0;
       const fromQuery = String(route.query.projectId || '');
       if (fromQuery && projects.value.some((p) => p.id === fromQuery)) {
         selectedProjectId.value = fromQuery;
@@ -123,6 +126,7 @@ export function useTaskForm() {
 
   return {
     isEdit,
+    trackedSeconds,
     projects,
     selectedProjectId,
     title,

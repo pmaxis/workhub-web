@@ -172,12 +172,6 @@ const freelancerNavStructure: NavItem[] = [
         routeNames: ['clients', 'clientCreate', 'clientEdit'],
       },
       {
-        name: 'clientProjects',
-        label: 'Their projects',
-        to: { name: 'clientProjects' },
-        routeNames: ['clientProjects'],
-      },
-      {
         name: 'clientNotes',
         label: 'Notes',
         to: { name: 'clientNotes' },

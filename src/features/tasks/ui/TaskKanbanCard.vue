@@ -19,6 +19,13 @@
           <span class="text-zinc-400">Project:</span>
           {{ projectName }}
         </p>
+        <p
+          v-if="(task.trackedDurationSeconds ?? 0) > 0"
+          class="mt-1.5 text-xs font-medium text-zinc-700"
+        >
+          <span class="font-normal text-zinc-400">Your time:</span>
+          {{ formatTracked(task.trackedDurationSeconds ?? 0) }}
+        </p>
       </div>
       <div class="shrink-0 self-start" data-no-drag>
         <Dropdown>
@@ -55,4 +62,12 @@ defineProps<{
 const emit = defineEmits<{
   remove: [task: Task];
 }>();
+
+function formatTracked(totalSeconds: number): string {
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  if (h > 0) return `${h}h ${m}m`;
+  if (m > 0) return `${m}m`;
+  return `${totalSeconds}s`;
+}
 </script>

@@ -14,6 +14,10 @@
       <h2 class="text-base font-medium text-zinc-900">
         {{ isEdit ? 'Edit task' : 'New task' }}
       </h2>
+      <p v-if="isEdit && trackedSeconds > 0" class="mt-2 text-sm text-zinc-600">
+        <span class="text-zinc-500">Time tracked (your logs):</span>
+        {{ formatTracked(trackedSeconds) }}
+      </p>
 
       <Form class="mt-5" @submit.prevent="submit">
         <p v-if="loadError" class="text-sm text-red-600">{{ loadError }}</p>
@@ -60,8 +64,17 @@ import { Button, Form, FormField, Icon } from '@/shared/ui';
 import { useTaskForm } from '@/features/tasks/model/useTaskForm';
 import { KANBAN_COLUMNS } from '@/features/tasks/model/useTasksKanban';
 
+function formatTracked(totalSeconds: number): string {
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  if (h > 0) return `${h}h ${m}m`;
+  if (m > 0) return `${m}m`;
+  return `${totalSeconds}s`;
+}
+
 const {
   isEdit,
+  trackedSeconds,
   projects,
   selectedProjectId,
   title,
