@@ -49,13 +49,13 @@ const financeGroup: NavGroup = {
       name: 'payments',
       label: 'Payments',
       to: { name: 'payments' },
-      routeNames: ['payments'],
+      routeNames: ['payments', 'paymentCreate', 'paymentEdit'],
     },
     {
       name: 'expenses',
       label: 'Expenses',
       to: { name: 'expenses' },
-      routeNames: ['expenses'],
+      routeNames: ['expenses', 'expenseCreate', 'expenseEdit'],
     },
     {
       name: 'financeAnalytics',
