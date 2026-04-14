@@ -37,7 +37,7 @@
         v-if="open"
         ref="panelRef"
         tabindex="-1"
-        class="fixed z-200 flex max-h-60 flex-col gap-1 overflow-x-hidden overflow-y-auto rounded-xl border border-zinc-200/90 bg-white p-1 shadow-[0_12px_40px_-12px_rgb(0_0_0_/0.18),0_4px_16px_-4px_rgb(0_0_0_/0.08)] outline-none select-scroll"
+        class="fixed z-200 flex max-h-44 flex-col gap-1 overflow-x-hidden overflow-y-auto rounded-xl border border-zinc-200/90 bg-white p-1 shadow-[0_12px_40px_-12px_rgb(0_0_0_/0.18),0_4px_16px_-4px_rgb(0_0_0_/0.08)] outline-none select-scroll"
         role="listbox"
         :style="panelStyle"
         :aria-labelledby="triggerId"
@@ -100,6 +100,8 @@ const panelStyle = ref<Record<string, string>>({});
 const highlightedIndex = ref(0);
 
 const GAP_PX = 6;
+/** Matches Tailwind max-h-44 (11rem ≈ 176px) — ~4 visible options with py-2 rows */
+const PANEL_MAX_HEIGHT_PX = 176;
 
 const showPlaceholder = computed(() => {
   const v = model.value;
@@ -134,16 +136,46 @@ function optionClass(opt: SelectOption, index: number): string {
   return `${base} hover:bg-zinc-50/90`;
 }
 
+function viewportHeight(): number {
+  return window.visualViewport?.height ?? window.innerHeight;
+}
+
 function updatePosition() {
   const root = rootRef.value;
   if (!root) return;
+  const approxRow = 44;
   const rect = root.getBoundingClientRect();
-  panelStyle.value = {
-    top: `${rect.bottom + GAP_PX}px`,
-    left: `${rect.left}px`,
-    width: `${rect.width}px`,
-    minWidth: `${rect.width}px`,
-  };
+  const vh = viewportHeight();
+  const spaceBelow = vh - rect.bottom - GAP_PX;
+  const spaceAbove = rect.top - GAP_PX;
+
+  let panelHeight = panelRef.value?.getBoundingClientRect().height ?? 0;
+  if (panelHeight <= 0) {
+    panelHeight = Math.min(PANEL_MAX_HEIGHT_PX, Math.max(approxRow, props.options.length * approxRow + 8));
+  }
+  panelHeight = Math.min(panelHeight, PANEL_MAX_HEIGHT_PX);
+
+  const preferUp = spaceBelow < panelHeight && spaceAbove > spaceBelow;
+
+  if (preferUp) {
+    panelStyle.value = {
+      top: 'auto',
+      bottom: `${vh - rect.top + GAP_PX}px`,
+      left: `${rect.left}px`,
+      width: `${rect.width}px`,
+      minWidth: `${rect.width}px`,
+      maxHeight: `${Math.max(approxRow, Math.min(PANEL_MAX_HEIGHT_PX, spaceAbove - 4))}px`,
+    };
+  } else {
+    panelStyle.value = {
+      top: `${rect.bottom + GAP_PX}px`,
+      bottom: 'auto',
+      left: `${rect.left}px`,
+      width: `${rect.width}px`,
+      minWidth: `${rect.width}px`,
+      maxHeight: `${Math.max(approxRow, Math.min(PANEL_MAX_HEIGHT_PX, spaceBelow - 4))}px`,
+    };
+  }
 }
 
 function syncHighlightToSelection() {
@@ -233,6 +265,7 @@ watch(open, async (isOpen) => {
   syncHighlightToSelection();
   await nextTick();
   updatePosition();
+  requestAnimationFrame(() => updatePosition());
   bindViewportListeners();
   document.addEventListener('keydown', onDocumentKeydown, true);
   await nextTick();

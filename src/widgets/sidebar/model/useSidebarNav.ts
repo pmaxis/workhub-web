@@ -93,7 +93,7 @@ const secondBrainGroup: NavGroup = {
       name: 'journal',
       label: 'Journal',
       to: { name: 'journal' },
-      routeNames: ['journal'],
+      routeNames: ['journal', 'journalCreate', 'journalEdit'],
     },
   ],
 };
