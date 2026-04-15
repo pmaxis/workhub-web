@@ -32,6 +32,8 @@
           :disabled="isEdit"
         />
         <FormField v-model="title" label="Title" id="title" type="text" required />
+        <FormField v-model="dueDate" label="Due date (optional)" id="dueDate" type="date" />
+        <p class="-mt-2 text-xs text-zinc-500">Used on Calendar and Deadlines.</p>
         <FormField v-model="description" label="Description" as="textarea" id="description" rows="3" />
         <FormField
           v-model="status"
@@ -78,6 +80,7 @@ const {
   projects,
   selectedProjectId,
   title,
+  dueDate,
   description,
   status,
   saving,

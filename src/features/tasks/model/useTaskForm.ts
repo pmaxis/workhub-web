@@ -17,6 +17,8 @@ export function useTaskForm() {
   const title = ref('');
   const description = ref('');
   const status = ref<TaskStatus>('PENDING');
+  /** Local calendar day (YYYY-MM-DD) for optional due date */
+  const dueDate = ref('');
 
   const saving = ref(false);
   const formError = ref('');
@@ -51,6 +53,7 @@ export function useTaskForm() {
       title.value = t.title;
       description.value = t.description ?? '';
       status.value = t.status;
+      dueDate.value = t.dueAt ? t.dueAt.slice(0, 10) : '';
       trackedSeconds.value = t.trackedDurationSeconds ?? 0;
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'Could not load task';
@@ -72,6 +75,7 @@ export function useTaskForm() {
       title.value = '';
       description.value = '';
       status.value = 'PENDING';
+      dueDate.value = '';
       trackedSeconds.value = 0;
       const fromQuery = String(route.query.projectId || '');
       if (fromQuery && projects.value.some((p) => p.id === fromQuery)) {
@@ -92,6 +96,9 @@ export function useTaskForm() {
           title: title.value.trim(),
           description: description.value.trim() || null,
           status: status.value,
+          dueAt: dueDate.value.trim()
+            ? `${dueDate.value.trim()}T12:00:00.000Z`
+            : null,
         });
         notifySuccess('Task saved');
         await router.push(backTo.value);
@@ -107,6 +114,9 @@ export function useTaskForm() {
           description: description.value.trim() || undefined,
           status: status.value,
           projectId: selectedProjectId.value,
+          ...(dueDate.value.trim()
+            ? { dueAt: `${dueDate.value.trim()}T12:00:00.000Z` }
+            : {}),
         });
         notifySuccess('Task created');
         await router.push({ name: 'tasks' });
@@ -132,6 +142,7 @@ export function useTaskForm() {
     title,
     description,
     status,
+    dueDate,
     saving,
     formError,
     loadError,

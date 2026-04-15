@@ -19,6 +19,10 @@
           <span class="text-zinc-400">Project:</span>
           {{ projectName }}
         </p>
+        <p v-if="task.dueAt" class="mt-1 text-xs text-zinc-600">
+          <span class="text-zinc-400">Due:</span>
+          {{ task.dueAt.slice(0, 10) }}
+        </p>
         <p
           v-if="(task.trackedDurationSeconds ?? 0) > 0"
           class="mt-1.5 text-xs font-medium text-zinc-700"

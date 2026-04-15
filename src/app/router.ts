@@ -191,19 +191,19 @@ const router = createRouter({
         {
           path: 'calendar',
           name: 'calendar',
-          component: () => import('@/pages/PlaceholderPage.vue'),
+          component: () => import('@/pages/CalendarPage.vue'),
           meta: { pageTitle: 'Calendar' },
         },
         {
           path: 'deadlines',
           name: 'deadlines',
-          component: () => import('@/pages/PlaceholderPage.vue'),
+          component: () => import('@/pages/DeadlinesPage.vue'),
           meta: { pageTitle: 'Deadlines' },
         },
         {
           path: 'reminders',
           name: 'reminders',
-          component: () => import('@/pages/PlaceholderPage.vue'),
+          component: () => import('@/pages/RemindersPage.vue'),
           meta: { pageTitle: 'Reminders' },
         },
         {
